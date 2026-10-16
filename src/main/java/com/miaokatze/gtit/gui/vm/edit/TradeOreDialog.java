@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -21,7 +23,7 @@ final class TradeOreDialog extends Dialog<Boolean> {
         setDisablePanelsBelow(true);
         setDraggable(false);
         child(
-            IKey.str("矿词匹配 / 当前选项数量")
+            IKey.str(VendingUiText.tr("gtit.ui.oredialog.001"))
                 .asWidget()
                 .left(10)
                 .top(8));
@@ -43,7 +45,7 @@ final class TradeOreDialog extends Dialog<Boolean> {
                 .left(10)
                 .top(72));
         child(
-            new ButtonWidget<>().overlay(IKey.str("确定"))
+            new ButtonWidget<>().overlay(IKey.str(VendingUiText.tr("gtit.ui.oredialog.002")))
                 .left(40)
                 .bottom(8)
                 .size(65, 18)
@@ -52,12 +54,12 @@ final class TradeOreDialog extends Dialog<Boolean> {
                         editor.applyOre(index, ore, Integer.parseInt(amount));
                         closeIfOpen();
                     } catch (RuntimeException e) {
-                        error = "§c矿词无可用物品或数量非法";
+                        error = VendingUiText.tr("gtit.ui.oredialog.003");
                     }
                     return true;
                 }));
         child(
-            new ButtonWidget<>().overlay(IKey.str("取消"))
+            new ButtonWidget<>().overlay(IKey.str(VendingUiText.tr("gtit.ui.oredialog.004")))
                 .right(40)
                 .bottom(8)
                 .size(65, 18)
