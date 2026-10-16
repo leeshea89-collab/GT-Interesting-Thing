@@ -1,0 +1,53 @@
+name: GTIT English Vending UI preview
+
+on:
+  push:
+    branches: [english-vending-machine-ui]
+  workflow_dispatch:
+
+concurrency:
+  group: gtit-english-vending-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Compile GTNH 2.9 RC2 GTIT mod
+        run: |
+          chmod +x gradlew
+          ./gradlew assemble --no-daemon --stacktrace
+      - name: Prepare JAR and checksum
+        run: |
+          mkdir -p dist
+          jar=$(find build/libs -maxdepth 1 -name '*.jar' \
+            ! -name '*-sources.jar' ! -name '*-dev.jar' ! -name '*-javadoc.jar' \
+            -print -quit)
+          test -n "$jar"
+          cp "$jar" dist/GTIT-English-Vending-UI-GTNH-2.9.0-RC2-UNTESTED.jar
+          (cd dist && sha256sum *.jar > SHA256SUMS.txt)
+      - name: Upload test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GTIT-English-Vending-UI-GTNH-2.9-RC2
+          path: dist/*
+          if-no-files-found: error
+      - name: Publish direct-JAR pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="gtit-english-vending-ui-${GITHUB_SHA:0:7}"
+          gh release create "$tag" dist/*.jar dist/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --prerelease \
+            --title "GTIT English vending-machine UI (GTNH 2.9 RC2 test)" \
+            --notes "Experimental English localization of Neko Vending Machine tabs, editors, check-in, lottery and mailbox; original Chinese translations preserved. Based on MIAOKATZE/GT-Interesting-Thing. No trade logic, machine IDs or NBT data intentionally changed. Compiled against GTNH 2.9.0 RC2; not yet tested in-game. Back up your world and replace the old GTIT JAR; do not install both."
