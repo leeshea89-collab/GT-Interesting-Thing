@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -172,7 +174,7 @@ public final class LotteryPoolEditor {
         // 标题（新建 / 编辑 + 池 id 动态切换）
         editPanel.child(
             new TextWidget<>(
-                IKey.dynamic(() -> EnumChatFormatting.GOLD + (editPoolIsNew ? "新建抽奖卡池" : "编辑抽奖卡池（" + editPoolId + "）")))
+                IKey.dynamic(() -> EnumChatFormatting.GOLD + (editPoolIsNew ? VendingUiText.tr("gtit.ui.lotterypool.001") : VendingUiText.tr("gtit.ui.lotterypool.002") + editPoolId + "）")))
                     .top(5)
                     .horizontalCenter());
 
@@ -183,7 +185,7 @@ public final class LotteryPoolEditor {
 
         // ---- 卡池 ID（新建模式可编辑；现有池只读展示，防保底记录/中奖历史悬空）----
         editPanel.child(
-            new TextWidget<>(IKey.str("卡池ID:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.003"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget idField = new TextFieldWidget()
@@ -193,8 +195,8 @@ public final class LotteryPoolEditor {
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
         idField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("卡池唯一标识（仅字母/数字/下划线/连字符）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "保存后不可修改"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.004")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotterypool.005")));
         });
         idField.tooltipAutoUpdate(true);
         // 仅新建模式显示输入框（现有池改走下方只读文本）
@@ -209,7 +211,7 @@ public final class LotteryPoolEditor {
         // ---- 名称 ----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("名称:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.006"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget nameField = new TextFieldWidget()
@@ -218,13 +220,13 @@ public final class LotteryPoolEditor {
         nameField.left(labelWidth)
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
-        nameField.tooltipBuilder(t -> t.addLine(IKey.str("卡池显示名称（留空则保持原名）")));
+        nameField.tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.007"))));
         nameField.tooltipAutoUpdate(true);
         // v1.7.19：TextFieldWidget 延迟到 PhantomItemSlot 之后添加（z-index 置顶）
 
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("奖池槽数:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.008"))).left(8)
                 .top(fieldY + 2));
         TextFieldWidget entryCountField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> String.valueOf(editPoolEntryCount), val -> {
@@ -238,8 +240,8 @@ public final class LotteryPoolEditor {
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
         entryCountField.tooltipBuilder(t -> {
-            t.addLine(IKey.dynamic(() -> "槽数范围 " + editPoolMinEntryCount + ".." + LotteryPool.MAX_ENTRIES));
-            t.addLine(IKey.str("缩减前须清空尾部奖品并将权重设为 0"));
+            t.addLine(IKey.dynamic(() -> VendingUiText.tr("gtit.ui.lotterypool.009") + editPoolMinEntryCount + ".." + LotteryPool.MAX_ENTRIES));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.010")));
         });
         entryCountField.tooltipAutoUpdate(true);
         editPanel.child(entryCountField);
@@ -247,15 +249,15 @@ public final class LotteryPoolEditor {
         // ---- page 图标（PhantomItemSlot 拖入配置，支持 NBT；空槽 = 回退货币图标）----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("图标:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.011"))).left(8)
                 .top(fieldY + 2));
 
         PhantomItemSlot iconSlot = new PhantomItemSlot().slot(new ModularSlot(editPoolItemHandler, 0));
         iconSlot.left(labelWidth)
             .top(fieldY - 2);
         iconSlot.tooltipBuilder(t -> {
-            t.addLine(IKey.str("拖入物品作为池标签图标（支持 NBT）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "留空 = 按池消耗货币显示缺省币图标"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.012")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotterypool.013")));
         });
         iconSlot.tooltipAutoUpdate(true);
         editPanel.child(iconSlot);
@@ -263,7 +265,7 @@ public final class LotteryPoolEditor {
         // ---- 消耗需求（PhantomItemSlot×4：货币物品扣团队钱包、普通物品扣机器输入槽）----
         fieldY += 21; // 图标槽高 18，多留间距
         editPanel.child(
-            new TextWidget<>(IKey.str("消耗需求:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.014"))).left(8)
                 .top(fieldY + 2));
 
         for (int i = 0; i < POOL_COST_SLOTS; i++) {
@@ -271,10 +273,10 @@ public final class LotteryPoolEditor {
             costSlot.left(labelWidth + i * 20)
                 .top(fieldY - 2);
             costSlot.tooltipBuilder(t -> {
-                t.addLine(IKey.str("单次抽取消耗（数量=槽内堆叠数）"));
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "猫猫币物品 → 团队钱包扣除"));
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "普通物品 → 机器输入槽扣除"));
-                t.addLine(IKey.str(EnumChatFormatting.DARK_GRAY + "留空全部 = 免费"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.015")));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotterypool.016")));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotterypool.017")));
+                t.addLine(IKey.str(EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.lotterypool.018")));
             });
             costSlot.tooltipAutoUpdate(true);
             editPanel.child(costSlot);
@@ -287,7 +289,7 @@ public final class LotteryPoolEditor {
         // ---- 保底启用（点击切换）----
         fieldY += 21; // 消耗槽高 18，多留间距
         editPanel.child(
-            new TextWidget<>(IKey.str("保底启用:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.019"))).left(8)
                 .top(fieldY + 2));
 
         ButtonWidget<?> pityToggle = new ButtonWidget<>().left(labelWidth)
@@ -296,8 +298,8 @@ public final class LotteryPoolEditor {
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
             .overlay(
                 IKey.dynamic(
-                    () -> editPoolPityEnabled ? EnumChatFormatting.GREEN + "启用" : EnumChatFormatting.RED + "停用"))
-            .tooltipBuilder(t -> t.addLine(IKey.str("点击切换保底机制启用/停用")))
+                    () -> editPoolPityEnabled ? EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.lotterypool.020") : EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lotterypool.021")))
+            .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.022"))))
             .onMouseTapped(mouse -> {
                 editPoolPityEnabled = !editPoolPityEnabled;
                 return true;
@@ -308,7 +310,7 @@ public final class LotteryPoolEditor {
         // ---- 软保底阈值 ----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("软保底:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.023"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget softPityField = new TextFieldWidget()
@@ -321,14 +323,14 @@ public final class LotteryPoolEditor {
         softPityField.left(labelWidth)
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
-        softPityField.tooltipBuilder(t -> t.addLine(IKey.str("软保底起始抽数（此后高稀有概率逐抽递增）")));
+        softPityField.tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.024"))));
         softPityField.tooltipAutoUpdate(true);
         editPanel.child(softPityField);
 
         // ---- 硬保底阈值 ----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("硬保底:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.025"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget hardPityField = new TextFieldWidget()
@@ -341,14 +343,14 @@ public final class LotteryPoolEditor {
         hardPityField.left(labelWidth)
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
-        hardPityField.tooltipBuilder(t -> t.addLine(IKey.str("硬保底抽数（达到后必出保证稀有度，0=关闭）")));
+        hardPityField.tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.026"))));
         hardPityField.tooltipAutoUpdate(true);
         editPanel.child(hardPityField);
 
         // ---- 保证稀有度（点击循环切换：普通→稀有→史诗→传说）----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("保证稀有度:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.027"))).left(8)
                 .top(fieldY + 2));
 
         ButtonWidget<?> rarityButton = new ButtonWidget<>().left(labelWidth)
@@ -356,7 +358,7 @@ public final class LotteryPoolEditor {
             .size(fieldWidth, fieldHeight)
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
             .overlay(IKey.dynamic(this::poolGuaranteedRarityDisplay))
-            .tooltipBuilder(t -> t.addLine(IKey.str("硬保底触发时保证的稀有度（点击循环切换）")))
+            .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.028"))))
             .onMouseTapped(mouse -> {
                 cyclePoolGuaranteedRarity();
                 return true;
@@ -369,7 +371,7 @@ public final class LotteryPoolEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(14)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.029")))
                 .onMouseTapped(mouse -> {
                     saveLotteryPoolEdit();
                     requestClose.run();
@@ -379,15 +381,15 @@ public final class LotteryPoolEditor {
         ButtonWidget<?> deleteButton = new ButtonWidget<>().size(50, 16)
             .left(80)
             .bottom(8)
-            .overlay(IKey.str(EnumChatFormatting.RED + "删除"))
+            .overlay(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lotterypool.030")))
             .onMouseTapped(mouse -> {
                 deleteLotteryPoolEdit();
                 requestClose.run();
                 return true;
             });
         deleteButton.tooltipBuilder(t -> {
-            t.addLine(IKey.str(EnumChatFormatting.RED + "删除本卡池"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "至少保留一个卡池（服务端校验）"));
+            t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lotterypool.031")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotterypool.032")));
         });
         deleteButton.tooltipAutoUpdate(true);
         deleteButton.setEnabledIf(w -> !editPoolIsNew);
@@ -396,7 +398,7 @@ public final class LotteryPoolEditor {
             new ButtonWidget<>().size(50, 16)
                 .right(14)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.lotterypool.033")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
