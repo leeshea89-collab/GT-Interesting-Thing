@@ -1094,3 +1094,10 @@ gtit.ui.status.001=未知
 gtit.ui.status.002=收藏
 gtit.ui.status.003=未知
 gtit.ui.status.004=未知
+
+# Built-in vending tab display names, no changes to stored configuration
+gtit.ui.defaultpage.neko=猫猫币
+gtit.ui.defaultpage.shimmering=闪烁猫猫币
+gtit.ui.defaultpage.periodic=周期领取
+gtit.ui.defaultpage.basic=基础
+gtit.ui.defaultpage.other=其他
