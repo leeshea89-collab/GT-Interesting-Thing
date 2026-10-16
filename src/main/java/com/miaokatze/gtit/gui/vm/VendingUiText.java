@@ -13,6 +13,22 @@ public final class VendingUiText {
 
     private VendingUiText() {}
 
+    /**
+     * Translate only known built-in tab display names, never their saved IDs.
+     * User-defined tab names are preserved exactly as entered.
+     */
+    public static String displayPageName(String original) {
+        if (original == null) return null;
+        return switch (original) {
+            case "猫猫币" -> tr("gtit.ui.defaultpage.neko");
+            case "闪烁猫猫币" -> tr("gtit.ui.defaultpage.shimmering");
+            case "周期领取" -> tr("gtit.ui.defaultpage.periodic");
+            case "基础" -> tr("gtit.ui.defaultpage.basic");
+            case "其他" -> tr("gtit.ui.defaultpage.other");
+            default -> original;
+        };
+    }
+
     public static String tr(String key) {
         return StatCollector.translateToLocal(key);
     }
