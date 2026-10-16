@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.List;
 
 import net.minecraft.item.Item;
@@ -192,7 +194,7 @@ public final class SignInEditor {
                 }
             }
             fillSignInItemBuffer(editSignInItemHandler, reward);
-            LOG.info("[NekoEdit] 已加载签到{}阶梯到编辑缓冲区: {}", cumulative ? "累计" : "连续", target);
+            LOG.info("[NekoEdit] 已加载签到{}阶梯到编辑缓冲区: {}", cumulative ? VendingUiText.tr("gtit.ui.signineditor.001") : VendingUiText.tr("gtit.ui.signineditor.002"), target);
         } catch (Exception e) {
             LOG.error("[NekoEdit] 加载签到阶梯到编辑缓冲区失败: {}", target, e);
         }
@@ -289,18 +291,18 @@ public final class SignInEditor {
         // 标题（随模式/新增状态切换）
         editPanel.child(new TextWidget<>(IKey.dynamic(() -> {
             if ("monthly".equals(editSignInMode)) {
-                return EnumChatFormatting.GOLD + "编辑每月签到全局配置";
+                return EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.signineditor.003");
             }
-            String label = "cumtier".equals(editSignInMode) ? "累计" : "连续";
+            String label = "cumtier".equals(editSignInMode) ? VendingUiText.tr("gtit.ui.signineditor.004") : VendingUiText.tr("gtit.ui.signineditor.005");
             return editSignInOriginalDays > 0
-                ? EnumChatFormatting.GOLD + "编辑" + label + "阶梯（" + editSignInOriginalDays + " 天）"
-                : EnumChatFormatting.GOLD + "新增" + label + "阶梯";
+                ? EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.signineditor.006") + label + VendingUiText.tr("gtit.ui.signineditor.007") + editSignInOriginalDays + VendingUiText.tr("gtit.ui.signineditor.008")
+                : EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.signineditor.009") + label + VendingUiText.tr("gtit.ui.signineditor.010");
         })).top(5)
             .horizontalCenter());
 
         // ==================== 阶梯模式专属：所需天数 ====================
 
-        TextWidget<?> daysLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "所需天数:"));
+        TextWidget<?> daysLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.011")));
         daysLabel.left(8)
             .top(26);
         daysLabel.setEnabledIf(w -> !"monthly".equals(editSignInMode));
@@ -322,7 +324,7 @@ public final class SignInEditor {
         // ==================== 每月全局模式专属：递增开关 / 编辑目标 / 递增系数 ====================
 
         // 递增开关（v1.7.8 起默认 false=不递增；递增仅作用工作日/周末默认货币量，逐日覆盖天不递增）
-        TextWidget<?> incToggleLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "递增开关:"));
+        TextWidget<?> incToggleLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.012")));
         incToggleLabel.left(8)
             .top(26);
         incToggleLabel.setEnabledIf(w -> "monthly".equals(editSignInMode));
@@ -334,10 +336,10 @@ public final class SignInEditor {
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
             .overlay(
                 IKey.dynamic(
-                    () -> editSignInIncrementEnabled ? EnumChatFormatting.GREEN + "启用" : EnumChatFormatting.RED + "停用"))
+                    () -> editSignInIncrementEnabled ? EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.signineditor.013") : EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.signineditor.014")))
             .tooltipBuilder(t -> {
-                t.addLine(IKey.str("点击切换每日默认奖励是否随连续天数递增"));
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "递增仅作用工作日/周末默认货币量（逐日覆盖天不递增）"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.signineditor.015")));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.signineditor.016")));
             })
             .tooltipAutoUpdate(true)
             .onMouseTapped(mouse -> {
@@ -348,7 +350,7 @@ public final class SignInEditor {
         editPanel.child(incToggle);
 
         // 编辑目标（工作日/周末默认奖励子模式切换；货币字段与 4 物品槽随之整体切换）
-        TextWidget<?> subModeLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "编辑目标:"));
+        TextWidget<?> subModeLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.017")));
         subModeLabel.left(8)
             .top(44);
         subModeLabel.setEnabledIf(w -> "monthly".equals(editSignInMode));
@@ -360,11 +362,11 @@ public final class SignInEditor {
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
             .overlay(
                 IKey.dynamic(
-                    () -> editSignInMonthlyWeekend ? EnumChatFormatting.AQUA + "周末默认奖励"
-                        : EnumChatFormatting.YELLOW + "工作日默认奖励"))
+                    () -> editSignInMonthlyWeekend ? EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.signineditor.018")
+                        : EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.signineditor.019")))
             .tooltipBuilder(t -> {
-                t.addLine(IKey.str("点击切换编辑工作日/周末默认奖励"));
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "货币字段与 4 物品槽整体切换（切换不丢失内容）"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.signineditor.020")));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.signineditor.021")));
             })
             .tooltipAutoUpdate(true)
             .onMouseTapped(mouse -> {
@@ -375,7 +377,7 @@ public final class SignInEditor {
         editPanel.child(subModeToggle);
 
         // 递增系数（字符串暂存，保存时解析，非法回退 0）
-        TextWidget<?> incLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "递增系数:"));
+        TextWidget<?> incLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.022")));
         incLabel.left(8)
             .top(62);
         incLabel.setEnabledIf(w -> "monthly".equals(editSignInMode));
@@ -394,7 +396,7 @@ public final class SignInEditor {
 
         // 货币类型
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币类型:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.023"))).left(8)
                 .top(80));
         TextFieldWidget currencyField = new TextFieldWidget().value(new StringValue.Dynamic(() -> {
             if ("monthly".equals(editSignInMode)) {
@@ -420,7 +422,7 @@ public final class SignInEditor {
 
         // 货币数量
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币数量:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.024"))).left(8)
                 .top(98));
         TextFieldWidget amountField = new TextFieldWidget().value(new StringValue.Dynamic(() -> {
             if ("monthly".equals(editSignInMode)) {
@@ -449,7 +451,7 @@ public final class SignInEditor {
 
         // 物品奖励（4 槽，PhantomItemSlot 拖入配置；留空 = 无物品奖励）
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "物品奖励:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.025"))).left(8)
                 .top(118));
         for (int i = 0; i < 4; i++) {
             final int slotIndex = i;
@@ -469,7 +471,7 @@ public final class SignInEditor {
         ButtonWidget<?> saveBtn = new ButtonWidget<>().size(40, 16)
             .left(14)
             .bottom(8)
-            .overlay(IKey.str("保存"))
+            .overlay(IKey.str(VendingUiText.tr("gtit.ui.signineditor.026")))
             .onMouseTapped(mouse -> {
                 saveSignInEdit("update");
                 requestClose.run();
@@ -482,7 +484,7 @@ public final class SignInEditor {
         ButtonWidget<?> deleteBtn = new ButtonWidget<>().size(40, 16)
             .left(62)
             .bottom(8)
-            .overlay(IKey.str(EnumChatFormatting.RED + "删除"))
+            .overlay(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.signineditor.027")))
             .onMouseTapped(mouse -> {
                 saveSignInEdit("remove");
                 requestClose.run();
@@ -494,7 +496,7 @@ public final class SignInEditor {
         ButtonWidget<?> tierCancelBtn = new ButtonWidget<>().size(40, 16)
             .left(110)
             .bottom(8)
-            .overlay(IKey.str("取消"))
+            .overlay(IKey.str(VendingUiText.tr("gtit.ui.signineditor.028")))
             .onMouseTapped(mouse -> {
                 requestClose.run();
                 return true;
@@ -505,8 +507,8 @@ public final class SignInEditor {
         ButtonWidget<?> addBtn = new ButtonWidget<>().size(40, 16)
             .left(158)
             .bottom(8)
-            .overlay(IKey.str(EnumChatFormatting.GREEN + "新增"))
-            .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + "以当前天数/奖励追加为新阶梯")))
+            .overlay(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.signineditor.029")))
+            .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.signineditor.030"))))
             .tooltipAutoUpdate(true)
             .onMouseTapped(mouse -> {
                 saveSignInEdit("add");
@@ -520,7 +522,7 @@ public final class SignInEditor {
         ButtonWidget<?> monthlySaveBtn = new ButtonWidget<>().size(50, 16)
             .left(30)
             .bottom(8)
-            .overlay(IKey.str("保存"))
+            .overlay(IKey.str(VendingUiText.tr("gtit.ui.signineditor.031")))
             .onMouseTapped(mouse -> {
                 saveSignInEdit("update");
                 requestClose.run();
@@ -532,7 +534,7 @@ public final class SignInEditor {
         ButtonWidget<?> monthlyCancelBtn = new ButtonWidget<>().size(50, 16)
             .right(30)
             .bottom(8)
-            .overlay(IKey.str("取消"))
+            .overlay(IKey.str(VendingUiText.tr("gtit.ui.signineditor.032")))
             .onMouseTapped(mouse -> {
                 requestClose.run();
                 return true;
@@ -619,12 +621,12 @@ public final class SignInEditor {
 
         // 标题（目标日号；覆盖按月内日号生效）
         editPanel.child(
-            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + "编辑每日奖励（每月 " + editSignInDay + " 日）")).top(5)
+            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.signineditor.033") + editSignInDay + VendingUiText.tr("gtit.ui.signineditor.034"))).top(5)
                 .horizontalCenter());
 
         // 货币类型
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币类型:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.035"))).left(8)
                 .top(26));
         TextFieldWidget currencyField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> editSignInCurrency, val -> editSignInCurrency = val))
@@ -636,7 +638,7 @@ public final class SignInEditor {
 
         // 货币数量
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币数量:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.036"))).left(8)
                 .top(44));
         TextFieldWidget amountField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> String.valueOf(editSignInAmount), val -> {
@@ -652,7 +654,7 @@ public final class SignInEditor {
 
         // 物品奖励（4 槽，独立缓冲区；留空 = 无物品奖励）
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "物品奖励:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.signineditor.037"))).left(8)
                 .top(64));
         for (int i = 0; i < 4; i++) {
             final int slotIndex = i;
@@ -671,7 +673,7 @@ public final class SignInEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(14)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.signineditor.038")))
                 .onMouseTapped(mouse -> {
                     saveSignInDayEdit("update");
                     requestClose.run();
@@ -681,8 +683,8 @@ public final class SignInEditor {
             new ButtonWidget<>().size(58, 16)
                 .left(71)
                 .bottom(8)
-                .overlay(IKey.str(EnumChatFormatting.RED + "清除覆盖"))
-                .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + "删除该日号覆盖，回退工作日/周末默认")))
+                .overlay(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.signineditor.039")))
+                .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.signineditor.040"))))
                 .tooltipAutoUpdate(true)
                 .onMouseTapped(mouse -> {
                     saveSignInDayEdit("remove");
@@ -693,7 +695,7 @@ public final class SignInEditor {
             new ButtonWidget<>().size(50, 16)
                 .right(14)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.signineditor.041")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
