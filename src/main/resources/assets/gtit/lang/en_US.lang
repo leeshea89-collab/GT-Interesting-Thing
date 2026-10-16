@@ -1116,3 +1116,10 @@ gtit.ui.status.001=Unknown
 gtit.ui.status.002=Favourites
 gtit.ui.status.003=Unknown
 gtit.ui.status.004=Unknown
+
+# Built-in vending tab display names, no changes to stored configuration
+gtit.ui.defaultpage.neko=Neko Coins
+gtit.ui.defaultpage.shimmering=Shimmering Neko Coins
+gtit.ui.defaultpage.periodic=Periodic Rewards
+gtit.ui.defaultpage.basic=Basic
+gtit.ui.defaultpage.other=Other
