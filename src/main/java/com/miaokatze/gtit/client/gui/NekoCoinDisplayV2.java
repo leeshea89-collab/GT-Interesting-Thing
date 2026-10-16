@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.client.gui;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntSupplier;
 
@@ -165,13 +167,13 @@ public class NekoCoinDisplayV2 extends Flow {
             if (meAmountSupplier != null) {
                 int meAmt = meAmountSupplier.getAsInt();
                 if (meAmt > 0) {
-                    builder.addLine(IKey.str(EnumChatFormatting.LIGHT_PURPLE + "ME 网络: " + meAmt));
+                    builder.addLine(IKey.str(EnumChatFormatting.LIGHT_PURPLE + VendingUiText.tr("gtit.ui.coindisplay.001") + meAmt));
                 }
             }
             builder.emptyLine();
             // 提示行：灰色斜体（复刻 VM 的 eject_hint 样式）
             builder.addLine(
-                IKey.str("Shift 点击弹出全部 / Ctrl 点击弹出一组")
+                IKey.str(VendingUiText.tr("gtit.ui.coindisplay.002"))
                     .style(IKey.GRAY, IKey.ITALIC));
             builder.setAutoUpdate(true);
         });
@@ -192,10 +194,10 @@ public class NekoCoinDisplayV2 extends Flow {
             })
             .tooltipDynamic(builder -> {
                 builder.clearText();
-                builder.addLine(IKey.str(EnumChatFormatting.LIGHT_PURPLE + "从 ME 网络导入" + displayName));
+                builder.addLine(IKey.str(EnumChatFormatting.LIGHT_PURPLE + VendingUiText.tr("gtit.ui.coindisplay.003") + displayName));
                 if (meImportAmountSupplier != null) {
                     int meAmt = meImportAmountSupplier.getAsInt();
-                    builder.addLine(IKey.str(EnumChatFormatting.GRAY + "ME 余额: " + meAmt));
+                    builder.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.coindisplay.004") + meAmt));
                 }
                 builder.setAutoUpdate(true);
             });
