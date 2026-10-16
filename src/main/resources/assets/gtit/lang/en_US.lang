@@ -1102,3 +1102,17 @@ gtit.ui.mail.035=Administrator
 gtit.ui.mail.036=System
 gtit.ui.mail.037=Claimed
 gtit.ui.mail.038=Unclaimed
+
+# Neko coin display, trade choices, and status labels
+gtit.ui.coindisplay.001=ME Network: 
+gtit.ui.coindisplay.002=Shift-click: eject all / Ctrl-click: eject one stack
+gtit.ui.coindisplay.003=Import from ME Network
+gtit.ui.coindisplay.004=ME Balance: 
+gtit.ui.tradeiteminfo.001=One random output:
+gtit.ui.tradeiteminfo.002=Provide one complete option:
+gtit.ui.tradeiteminfo.003=Ore Dict [
+gtit.ui.tradeiteminfo.004=(random item)
+gtit.ui.status.001=Unknown
+gtit.ui.status.002=Favourites
+gtit.ui.status.003=Unknown
+gtit.ui.status.004=Unknown
