@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.client.gui;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -43,18 +45,18 @@ public class NekoTradeItemDisplay {
         if (entry == null) return;
         boolean multi = !entry.getAlternatives()
             .isEmpty();
-        if (multi) tooltip.addLine(color + (output ? "随机产出一项：" : "完整满足以下一项："));
+        if (multi) tooltip.addLine(color + (output ? VendingUiText.tr("gtit.ui.tradeiteminfo.001") : VendingUiText.tr("gtit.ui.tradeiteminfo.002")));
         describeOption(tooltip, entry, output, color);
         for (NekoBigItemStack option : entry.getAlternatives()) describeOption(tooltip, option, output, color);
     }
 
     private static void describeOption(com.cleanroommc.modularui.screen.RichTooltip tooltip, NekoBigItemStack option,
         boolean output, String color) {
-        String name = option.hasOreDict() ? "矿词 [" + option.getOreDict() + "]"
+        String name = option.hasOreDict() ? VendingUiText.tr("gtit.ui.tradeiteminfo.003") + option.getOreDict() + "]"
             : option.getBaseStack()
                 .getDisplayName();
         tooltip.addLine(
-            color + "  " + option.getStackSize() + " × " + name + (output && option.hasOreDict() ? "（随机物品）" : ""));
+            color + "  " + option.getStackSize() + " × " + name + (output && option.hasOreDict() ? VendingUiText.tr("gtit.ui.tradeiteminfo.004") : ""));
     }
 
     // ==================== 字段 ====================
