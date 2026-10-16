@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -134,7 +136,7 @@ public final class LotteryEntryEditor {
 
         // 标题（显示条目标识 "<poolId>:<entryId>"）
         editPanel.child(
-            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + "编辑抽奖条目（" + editLotteryEntryKey + "）")).top(5)
+            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.lotteryentry.001") + editLotteryEntryKey + "）")).top(5)
                 .horizontalCenter());
 
         int fieldY = 24;
@@ -144,7 +146,7 @@ public final class LotteryEntryEditor {
 
         // ---- 货币 ID（非空 = 货币奖品，保存时忽略物品槽）----
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币ID:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.lotteryentry.002"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget currencyField = new TextFieldWidget()
@@ -154,9 +156,9 @@ public final class LotteryEntryEditor {
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
         currencyField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("货币 ID（如 neko / shimmeringNeko）"));
-            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "非空 = 货币奖品，保存时忽略下方物品"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "留空 = 物品奖品（需放入物品）"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotteryentry.003")));
+            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.lotteryentry.004")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotteryentry.005")));
         });
         currencyField.tooltipAutoUpdate(true);
         // v1.7.19：TextFieldWidget 延迟到 PhantomItemSlot 之后添加（z-index 置顶）
@@ -164,15 +166,15 @@ public final class LotteryEntryEditor {
         // ---- 物品奖品（PhantomItemSlot 拖入配置，支持 NBT）----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "物品:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.lotteryentry.006"))).left(8)
                 .top(fieldY + 2));
 
         PhantomItemSlot itemSlot = new PhantomItemSlot().slot(new ModularSlot(editLotteryItemHandler, 0));
         itemSlot.left(labelWidth)
             .top(fieldY - 2);
         itemSlot.tooltipBuilder(t -> {
-            t.addLine(IKey.str("拖入物品作为奖品（支持 NBT）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "货币 ID 非空时本项被忽略"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotteryentry.007")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotteryentry.008")));
         });
         itemSlot.tooltipAutoUpdate(true);
         editPanel.child(itemSlot);
@@ -184,14 +186,14 @@ public final class LotteryEntryEditor {
         editPanel.child(
             new TextWidget<>(
                 IKey.dynamic(
-                    () -> editLotteryCurrency.isEmpty() ? EnumChatFormatting.GREEN + "物品奖品"
-                        : EnumChatFormatting.YELLOW + "已忽略（货币奖品）")).left(labelWidth + 22)
+                    () -> editLotteryCurrency.isEmpty() ? EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.lotteryentry.009")
+                        : EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.lotteryentry.010"))).left(labelWidth + 22)
                             .top(fieldY + 2));
 
         // ---- 最小数量 ----
         fieldY += 21; // 物品槽高 18，多留间距
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "最小数量:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.lotteryentry.011"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget minField = new TextFieldWidget()
@@ -209,7 +211,7 @@ public final class LotteryEntryEditor {
         // ---- 最大数量 ----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "最大数量:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.lotteryentry.012"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget maxField = new TextFieldWidget()
@@ -227,7 +229,7 @@ public final class LotteryEntryEditor {
         // ---- 权重 ----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "权重:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.lotteryentry.013"))).left(8)
                 .top(fieldY + 2));
 
         TextFieldWidget weightField = new TextFieldWidget()
@@ -241,8 +243,8 @@ public final class LotteryEntryEditor {
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
         weightField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("抽取权重（相对值）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "0 = 永不中出"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotteryentry.014")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lotteryentry.015")));
         });
         weightField.tooltipAutoUpdate(true);
         editPanel.child(weightField);
@@ -250,7 +252,7 @@ public final class LotteryEntryEditor {
         // ---- 稀有度（点击循环切换：普通→稀有→史诗→传说）----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "稀有度:")).left(8)
+            new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.lotteryentry.016"))).left(8)
                 .top(fieldY + 2));
 
         ButtonWidget<?> rarityButton = new ButtonWidget<>().left(labelWidth)
@@ -258,7 +260,7 @@ public final class LotteryEntryEditor {
             .size(fieldWidth, fieldHeight)
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
             .overlay(IKey.dynamic(this::lotteryRarityDisplay))
-            .tooltipBuilder(t -> t.addLine(IKey.str("点击循环切换稀有度（普通→稀有→史诗→传说）")))
+            .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lotteryentry.017"))))
             .onMouseTapped(mouse -> {
                 cycleLotteryRarity();
                 return true;
@@ -271,7 +273,7 @@ public final class LotteryEntryEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(30)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.lotteryentry.018")))
                 .onMouseTapped(mouse -> {
                     saveLotteryEdit();
                     requestClose.run();
@@ -281,7 +283,7 @@ public final class LotteryEntryEditor {
             new ButtonWidget<>().size(50, 16)
                 .right(30)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.lotteryentry.019")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
