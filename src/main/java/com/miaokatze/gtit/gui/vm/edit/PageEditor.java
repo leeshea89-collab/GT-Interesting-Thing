@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -165,7 +167,7 @@ public final class PageEditor {
         // 标题（新建 / 编辑 + pageId 动态切换）
         editPanel.child(
             new TextWidget<>(
-                IKey.dynamic(() -> EnumChatFormatting.GOLD + (editPageIsNew ? "新建标签页" : "编辑标签页（#" + editPageId + "）")))
+                IKey.dynamic(() -> EnumChatFormatting.GOLD + (editPageIsNew ? VendingUiText.tr("gtit.ui.pageeditor.001") : VendingUiText.tr("gtit.ui.pageeditor.002") + editPageId + "）")))
                     .top(5)
                     .horizontalCenter());
 
@@ -181,14 +183,14 @@ public final class PageEditor {
         editPanel.child(
             new TextWidget<>(
                 IKey.dynamic(
-                    () -> EnumChatFormatting.GRAY + (editPageIsNew ? "（保存时自动分配 ≥4）" : String.valueOf(editPageId))))
+                    () -> EnumChatFormatting.GRAY + (editPageIsNew ? VendingUiText.tr("gtit.ui.pageeditor.003") : String.valueOf(editPageId))))
                         .left(labelWidth)
                         .top(fieldY + 2));
 
         // ---- 名称 ----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("名称:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.pageeditor.004"))).left(8)
                 .top(fieldY + 2));
         TextFieldWidget nameField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> editPageName, val -> editPageName = val))
@@ -196,21 +198,21 @@ public final class PageEditor {
         nameField.left(labelWidth)
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
-        nameField.tooltipBuilder(t -> t.addLine(IKey.str("标签页显示名称（留空则保持原名）")));
+        nameField.tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.pageeditor.005"))));
         nameField.tooltipAutoUpdate(true);
         // v1.7.19：TextFieldWidget 延迟到 PhantomItemSlot 之后添加（z-index 置顶）
 
         // ---- 图标（PhantomItemSlot 拖入配置，支持 NBT；空槽 = 清空图标回退默认）----
         fieldY += 17;
         editPanel.child(
-            new TextWidget<>(IKey.str("图标:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.pageeditor.006"))).left(8)
                 .top(fieldY + 2));
         PhantomItemSlot iconSlot = new PhantomItemSlot().slot(new ModularSlot(editPageItemHandler, 0));
         iconSlot.left(labelWidth)
             .top(fieldY - 2);
         iconSlot.tooltipBuilder(t -> {
-            t.addLine(IKey.str("拖入物品作为标签页图标（支持 NBT）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "留空 = 清空图标（默认页回退默认图标）"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.pageeditor.007")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.pageeditor.008")));
         });
         iconSlot.tooltipAutoUpdate(true);
         editPanel.child(iconSlot);
@@ -223,7 +225,7 @@ public final class PageEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(14)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.pageeditor.009")))
                 .onMouseTapped(mouse -> {
                     savePageEdit();
                     requestClose.run();
@@ -233,16 +235,16 @@ public final class PageEditor {
         ButtonWidget<?> deleteButton = new ButtonWidget<>().size(50, 16)
             .left(80)
             .bottom(8)
-            .overlay(IKey.str(EnumChatFormatting.RED + "删除"))
+            .overlay(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.pageeditor.010")))
             .onMouseTapped(mouse -> {
                 deletePageEdit();
                 requestClose.run();
                 return true;
             });
         deleteButton.tooltipBuilder(t -> {
-            t.addLine(IKey.str(EnumChatFormatting.RED + "删除本标签页"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "页内交易移至「其他」页"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "默认页（ID 1-3）不可删除"));
+            t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.pageeditor.011")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.pageeditor.012")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.pageeditor.013")));
         });
         deleteButton.tooltipAutoUpdate(true);
         deleteButton.setEnabledIf(w -> !editPageIsNew);
@@ -251,7 +253,7 @@ public final class PageEditor {
             new ButtonWidget<>().size(50, 16)
                 .right(14)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.pageeditor.014")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
