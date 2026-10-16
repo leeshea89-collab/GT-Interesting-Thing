@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.client.gui;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.Dialog;
@@ -24,9 +26,9 @@ public class NekoConfirmationDialog extends Dialog<Boolean> {
     /** 确认时执行的回调 */
     private Runnable runnable = () -> {};
     /** 确认按钮文本（默认"确认"，可经 {@link #setButtonText} 覆写） */
-    private String confirmText = "确认";
+    private String confirmText = VendingUiText.tr("gtit.ui.confirm.001");
     /** 取消按钮文本（默认"取消"，可经 {@link #setButtonText} 覆写） */
-    private String cancelText = "取消";
+    private String cancelText = VendingUiText.tr("gtit.ui.confirm.002");
 
     /**
      * 构造确认对话框
