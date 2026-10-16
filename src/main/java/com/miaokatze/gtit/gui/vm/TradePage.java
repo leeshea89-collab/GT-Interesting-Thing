@@ -409,10 +409,10 @@ public final class TradePage {
             .childPadding(2);
 
         // 主标签定义：index → (图标, 名称)
-        Object[][] mainTabs = new Object[][] { { MAIN_TAB_TRADE, NekoGuiTextures.MAIN_TAB_TRADE, "贸易" },
-            { MAIN_TAB_SIGNIN, NekoGuiTextures.MAIN_TAB_SIGNIN, "签到" },
-            { MAIN_TAB_LOTTERY, NekoGuiTextures.MAIN_TAB_LOTTERY, "抽奖" },
-            { MAIN_TAB_MAIL, NekoGuiTextures.MAIN_TAB_MAIL, "邮件" }, };
+        Object[][] mainTabs = new Object[][] { { MAIN_TAB_TRADE, NekoGuiTextures.MAIN_TAB_TRADE, VendingUiText.tr("gtit.ui.tradepage.001") },
+            { MAIN_TAB_SIGNIN, NekoGuiTextures.MAIN_TAB_SIGNIN, VendingUiText.tr("gtit.ui.tradepage.002") },
+            { MAIN_TAB_LOTTERY, NekoGuiTextures.MAIN_TAB_LOTTERY, VendingUiText.tr("gtit.ui.tradepage.003") },
+            { MAIN_TAB_MAIL, NekoGuiTextures.MAIN_TAB_MAIL, VendingUiText.tr("gtit.ui.tradepage.004") }, };
 
         for (Object[] tabDef : mainTabs) {
             final int index = (Integer) tabDef[0];
@@ -532,7 +532,7 @@ public final class TradePage {
                 t.addLine(IKey.str(name));
                 // 编辑模式下追加操作提示（随编辑模式动态刷新）
                 if (gui.isEditModeActive() && category.getTabId() > 0) {
-                    t.addLine(IKey.str(EnumChatFormatting.YELLOW + "Shift+点击 编辑标签页"));
+                    t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.tradepage.005")));
                 }
             });
             tabButton.tooltipAutoUpdate(true);
@@ -577,8 +577,8 @@ public final class TradePage {
         newPageButton.externalMode(() -> false);
         newPageButton.onSelected(gui.pageEditor::beginNew);
         newPageButton.tooltipBuilder(t -> {
-            t.addLine(IKey.str("新建标签页"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "创建空白标签页（保存时自动分配 ID ≥ 4）"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.006")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.007")));
         });
         newPageButton.setEnabledIf(w -> gui.isEditModeActive());
         column.child(newPageButton);
@@ -609,11 +609,11 @@ public final class TradePage {
                 return true;
             })
             .tooltipBuilder(t -> {
-                t.addLine(IKey.str(step < 0 ? "上一页" : "下一页"));
+                t.addLine(IKey.str(step < 0 ? VendingUiText.tr("gtit.ui.tradepage.008") : VendingUiText.tr("gtit.ui.tradepage.009")));
                 t.addLine(IKey.dynamic(() -> {
-                    if (step < 0 && tabPage <= 0) return EnumChatFormatting.GRAY + "已是第一页";
-                    if (step > 0 && tabPage >= maxTabPage) return EnumChatFormatting.GRAY + "已是最后一页";
-                    return EnumChatFormatting.GRAY + "第 " + (tabPage + 1) + " / " + (maxTabPage + 1) + " 页";
+                    if (step < 0 && tabPage <= 0) return EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.010");
+                    if (step > 0 && tabPage >= maxTabPage) return EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.011");
+                    return EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.012") + (tabPage + 1) + " / " + (maxTabPage + 1) + VendingUiText.tr("gtit.ui.tradepage.013");
                 }));
             });
         button.tooltipAutoUpdate(true);
@@ -711,7 +711,7 @@ public final class TradePage {
                     if (pool != null) {
                         t.addLine(IKey.str(pool.name));
                         if (gui.isEditModeActive()) {
-                            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "Shift+点击 编辑卡池"));
+                            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.tradepage.014")));
                         }
                     }
                 });
@@ -730,8 +730,8 @@ public final class TradePage {
             newPoolButton.externalMode(() -> false);
             newPoolButton.onSelected(gui.lotteryPoolEditor::beginNew);
             newPoolButton.tooltipBuilder(t -> {
-                t.addLine(IKey.str("新建卡池"));
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "默认 10 个空奖品槽，可选 4～10 槽"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.015")));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.016")));
             });
             newPoolButton.setEnabledIf(w -> gui.isEditModeActive());
             subTabColumn.child(newPoolButton);
@@ -745,15 +745,15 @@ public final class TradePage {
             if (mainTab == MAIN_TAB_SIGNIN) {
                 // 签到「活跃」4 页（与 G2③ 页面顺序一致）：每月签到/连续签到/每日在线/纪念日
                 controller = signInPageController;
-                subTabs = new Object[][] { { 0, NekoGuiTextures.SIGNIN_CELL_SIGNED, "每月签到" },
-                    { 1, NekoGuiTextures.SIGNIN_CHEST_30, "连续签到" }, { 2, NekoGuiTextures.SIGNIN_CELL_REWARD, "每日在线" },
-                    { 3, NekoGuiTextures.FAVOURITE_SPRITE, "纪念日" }, };
+                subTabs = new Object[][] { { 0, NekoGuiTextures.SIGNIN_CELL_SIGNED, VendingUiText.tr("gtit.ui.tradepage.017") },
+                    { 1, NekoGuiTextures.SIGNIN_CHEST_30, VendingUiText.tr("gtit.ui.tradepage.018") }, { 2, NekoGuiTextures.SIGNIN_CELL_REWARD, VendingUiText.tr("gtit.ui.tradepage.019") },
+                    { 3, NekoGuiTextures.FAVOURITE_SPRITE, VendingUiText.tr("gtit.ui.tradepage.020") }, };
             } else {
                 // 邮件 5 页（与 G2② 页面顺序一致）：全部/系统/玩家/管理员 + 写邮件入口
                 controller = mailPageController;
-                subTabs = new Object[][] { { 0, NekoGuiTextures.MAIL_ICON_READ, "全部" },
-                    { 1, NekoGuiTextures.MAIL_ICON_UNREAD, "系统" }, { 2, NekoGuiTextures.WALLET_PERSONAL, "玩家" },
-                    { 3, NekoGuiTextures.MAIN_TAB_EDIT, "管理员" }, { 4, NekoGuiTextures.MAIL_WRITE, "写邮件" }, };
+                subTabs = new Object[][] { { 0, NekoGuiTextures.MAIL_ICON_READ, VendingUiText.tr("gtit.ui.tradepage.021") },
+                    { 1, NekoGuiTextures.MAIL_ICON_UNREAD, VendingUiText.tr("gtit.ui.tradepage.022") }, { 2, NekoGuiTextures.WALLET_PERSONAL, VendingUiText.tr("gtit.ui.tradepage.023") },
+                    { 3, NekoGuiTextures.MAIN_TAB_EDIT, VendingUiText.tr("gtit.ui.tradepage.024") }, { 4, NekoGuiTextures.MAIL_WRITE, VendingUiText.tr("gtit.ui.tradepage.025") }, };
             }
             for (Object[] tabDef : subTabs) {
                 final int index = (Integer) tabDef[0];
@@ -778,8 +778,8 @@ public final class TradePage {
                 blessingButton.externalMode(() -> false);
                 blessingButton.onSelected(() -> gui.blessingEditor.beginEdit("birthday"));
                 blessingButton.tooltipBuilder(t -> {
-                    t.addLine(IKey.str("祝福预设"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "查看/编辑自动祝福邮件模板"));
+                    t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.026")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.027")));
                 });
                 blessingButton.tooltipAutoUpdate(true);
                 blessingButton.setEnabledIf(w -> gui.isEditModeActive());
@@ -851,9 +851,9 @@ public final class TradePage {
             .tooltipBuilder(t -> {
                 NekoMusicEventHandler handler = NekoMusicEventHandler.getInstance();
                 boolean isEnabled = handler != null && !handler.isMutedByUser();
-                t.addLine(IKey.str(isEnabled ? "BGM: 开启" : "BGM: 关闭"));
-                t.addLine(IKey.str("音量: " + NekoVolumeControlGui.getVolumeAsString() + "%"));
-                t.addLine(IKey.str("Shift+点击 打开音量控制"));
+                t.addLine(IKey.str(isEnabled ? VendingUiText.tr("gtit.ui.tradepage.028") : VendingUiText.tr("gtit.ui.tradepage.029")));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.030") + NekoVolumeControlGui.getVolumeAsString() + "%"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.031")));
             });
         gui.volumeButton.tooltipAutoUpdate(true);
 
@@ -872,9 +872,9 @@ public final class TradePage {
             .tooltipBuilder(t -> {
                 t.addLine(
                     IKey.str(
-                        "当前: " + gui.getDisplayType()
+                        VendingUiText.tr("gtit.ui.tradepage.032") + gui.getDisplayType()
                             .getLocalizedName()));
-                t.addLine(IKey.str("点击切换显示模式"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.033")));
             });
         displayModeButton.tooltipAutoUpdate(true);
 
@@ -889,7 +889,7 @@ public final class TradePage {
                 gui.showCoinsSync.setValue(!gui.showCoins);
                 return true;
             })
-            .tooltipBuilder(t -> { t.addLine(IKey.str(gui.showCoins ? "隐藏猫猫币" : "显示猫猫币")); });
+            .tooltipBuilder(t -> { t.addLine(IKey.str(gui.showCoins ? VendingUiText.tr("gtit.ui.tradepage.034") : VendingUiText.tr("gtit.ui.tradepage.035"))); });
         showCoinsButton.tooltipAutoUpdate(true);
 
         // --- 排序模式切换按钮（右下）---
@@ -907,9 +907,9 @@ public final class TradePage {
             .tooltipBuilder(t -> {
                 t.addLine(
                     IKey.str(
-                        "当前: " + gui.getSortMode()
+                        VendingUiText.tr("gtit.ui.tradepage.036") + gui.getSortMode()
                             .getLocalizedName()));
-                t.addLine(IKey.str("点击切换排序模式"));
+                t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.037")));
             });
         sortModeButton.tooltipAutoUpdate(true);
 
@@ -952,8 +952,8 @@ public final class TradePage {
         mainColumn.child(
             IKey.dynamic(
                 () -> gui.isEditModeActive()
-                    ? EnumChatFormatting.DARK_GRAY + "猫猫售货机 " + EnumChatFormatting.RED + "[编辑模式]"
-                    : EnumChatFormatting.DARK_GRAY + "猫猫售货机")
+                    ? EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.tradepage.038") + EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.tradepage.039")
+                    : EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.tradepage.040"))
                 .asWidget()
                 .height(12)
                 .fullWidth()
@@ -971,7 +971,7 @@ public final class TradePage {
                 .child(IKey.dynamic(() -> {
                     NekoWalletMode mode = gui.getWalletMode();
                     if (mode == NekoWalletMode.TEAM) {
-                        return EnumChatFormatting.AQUA + "[团队钱包]";
+                        return EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.tradepage.041");
                     }
                     return "";
                 })
@@ -984,21 +984,21 @@ public final class TradePage {
                     new ButtonWidget<>().size(120, 12)
                         .overlay(IKey.dynamic(() -> {
                             boolean mode = gui.meOutputModeSync != null && gui.meOutputModeSync.getValue();
-                            return mode ? EnumChatFormatting.LIGHT_PURPLE + "[自动输入ME: 开]"
-                                : EnumChatFormatting.GRAY + "[自动输入ME: 关]";
+                            return mode ? EnumChatFormatting.LIGHT_PURPLE + VendingUiText.tr("gtit.ui.tradepage.042")
+                                : EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.043");
                         }))
                         .tooltipBuilder(t -> {
-                            t.addLine(IKey.str("切换产出路径：本地出货槽 ↔ ME 网络"));
+                            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.044")));
                             if (gui.hasUplinkSync != null && gui.hasUplinkSync.getValue()) {
-                                t.addLine(IKey.str(EnumChatFormatting.GRAY + "点击弹出确认对话框"));
+                                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.045")));
                             }
                         })
                         .tooltipAutoUpdate(true)
                         .onMouseTapped(mouse -> {
                             if (gui.meModeConfirmDialog != null && gui.meModeConfirmPanel != null) {
                                 boolean currentMode = gui.meOutputModeSync != null && gui.meOutputModeSync.getValue();
-                                String message = currentMode ? "确认关闭 ME 自动输入模式？新产出将走本地出货槽"
-                                    : "确认开启 ME 自动输入模式？新产出将通过 Uplink 发送到 ME 网络";
+                                String message = currentMode ? VendingUiText.tr("gtit.ui.tradepage.046")
+                                    : VendingUiText.tr("gtit.ui.tradepage.047");
                                 gui.meModeConfirmDialog.setParams(message, () -> {
                                     if (gui.meOutputModeSync != null) {
                                         gui.meOutputModeSync.setValue(!currentMode);
@@ -1013,7 +1013,7 @@ public final class TradePage {
 
         if (syncManager.isClient()) {
             // --- 搜索栏 ---
-            searchBar = new NekoSearchBar("搜索...");
+            searchBar = new NekoSearchBar(VendingUiText.tr("gtit.ui.tradepage.048"));
             searchBar.size(PANEL_WIDTH - 12, 14)
                 .fullWidth()
                 .marginBottom(2);
@@ -1080,7 +1080,7 @@ public final class TradePage {
         // 如果没有页面，添加占位页面防止崩溃
         if (tradeCategories.isEmpty()) {
             paged.addPage(
-                IKey.str("无可用交易")
+                IKey.str(VendingUiText.tr("gtit.ui.tradepage.049"))
                     .asWidget());
         }
 
@@ -1124,7 +1124,7 @@ public final class TradePage {
             .width(TRADE_ROW_WIDTH)
             .marginLeft(2)
             .child(
-                IKey.str(EnumChatFormatting.RED + "结构不完整")
+                IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.tradepage.050"))
                     .asWidget());
         statusRow.setEnabledIf(w -> !gui.isMachineActive());
         tradeList.child(statusRow);
@@ -1198,14 +1198,14 @@ public final class TradePage {
         newTradeRow.width(TRADE_ROW_WIDTH);
         newTradeRow.marginLeft(2);
         ButtonWidget<?> newTradeButton = new ButtonWidget<>().size(TRADE_ROW_WIDTH - 4, LIST_ITEM_HEIGHT - 2)
-            .overlay(IKey.str(EnumChatFormatting.GREEN + "+ 新建交易条目"))
+            .overlay(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.tradepage.051")))
             .onMouseTapped(mouse -> {
                 gui.tradeEditor.beginNewTrade(category.getTabId());
                 return true;
             });
         newTradeButton.tooltipBuilder(t -> {
-            t.addLine(IKey.str("新建交易条目"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "在本标签页尾部追加一条空白交易"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradepage.052")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradepage.053")));
         });
         newTradeRow.child(newTradeButton);
         newTradeRow.setEnabledIf(w -> gui.isEditModeActive() && category.getTabId() > 0);
