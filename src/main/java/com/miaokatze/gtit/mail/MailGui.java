@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.mail;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -230,7 +232,7 @@ public class MailGui {
         ParentWidget<?> bar = new ParentWidget<>().pos(0, 2)
             .size(PAGE_WIDTH, 12);
         bar.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + "猫猫邮件")).pos(0, 0)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.mail.001"))).pos(0, 0)
                 .size(PAGE_WIDTH, 12)
                 .textAlign(Alignment.Center)
                 .shadow(false));
@@ -238,7 +240,7 @@ public class MailGui {
             new TextWidget<>(
                 IKey.dynamic(
                     () -> MailClientData.getUnreadCount() > 0
-                        ? EnumChatFormatting.YELLOW + "未读 " + MailClientData.getUnreadCount()
+                        ? EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.mail.002") + MailClientData.getUnreadCount()
                         : "")).pos(0, 2)
                             .size(PAGE_WIDTH - 4, 9)
                             .textAlign(Alignment.CenterRight)
@@ -275,7 +277,7 @@ public class MailGui {
 
         // 空列表提示（仅过滤后无邮件时显示）
         list.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "该分类暂无邮件")).pos(0, 30)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.003"))).pos(0, 30)
                 .size(PAGE_WIDTH, 12)
                 .textAlign(Alignment.Center)
                 .shadow(false)
@@ -361,14 +363,14 @@ public class MailGui {
         t.addLine(
             IKey.str(
                 EnumChatFormatting.GRAY + typeDisplayName(mail.getType())
-                    + " · 来自 "
+                    + VendingUiText.tr("gtit.ui.mail.004")
                     + mail.getSender()
                     + " · "
                     + TIME_FORMAT.format(new Date(mail.getTimestamp()))));
         if (mail.hasUnclaimedAttachments()) {
-            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "含未领取附件"));
+            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.mail.005")));
         }
-        t.addLine(IKey.str(EnumChatFormatting.AQUA + "点击查看详情"));
+        t.addLine(IKey.str(EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.mail.006")));
     }
 
     // ==================== 翻页行 ====================
@@ -440,7 +442,7 @@ public class MailGui {
 
         // 未选中提示（仅无选中邮件时显示）
         detail.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "选择一封邮件查看详情")).pos(0, 48)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.007"))).pos(0, 48)
                 .size(DETAIL_W, 12)
                 .textAlign(Alignment.Center)
                 .shadow(false)
@@ -460,7 +462,7 @@ public class MailGui {
         detail.child(new TextWidget<>(IKey.dynamic(() -> {
             Mail mail = selectedMail();
             if (mail == null) return "";
-            return "来自 " + mail.getSender()
+            return VendingUiText.tr("gtit.ui.mail.008") + mail.getSender()
                 + " · "
                 + TIME_FORMAT.format(new Date(mail.getTimestamp()))
                 + " · "
@@ -510,11 +512,11 @@ public class MailGui {
                 .size(CLAIM_W, CLAIM_H)
                 .background(NekoGuiTextures.MAIL_BTN_CLAIM)
                 .disableHoverBackground()
-                .overlay(IKey.str(EnumChatFormatting.WHITE + "领取"))
+                .overlay(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.mail.009")))
                 .tooltipBuilder(t -> {
                     Mail mail = selectedMail();
                     if (mail != null && mail.hasUnclaimedAttachments()) {
-                        t.addLine(IKey.str(EnumChatFormatting.YELLOW + "领取全部附件"));
+                        t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.mail.010")));
                     }
                 })
                 .tooltipAutoUpdate(true)
@@ -550,10 +552,10 @@ public class MailGui {
                 .background(NekoGuiTextures.MAIL_TRASH)
                 .disableHoverBackground()
                 .tooltipBuilder(t -> {
-                    t.addLine(IKey.str(EnumChatFormatting.RED + "删除邮件"));
+                    t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.mail.011")));
                     Mail mail = selectedMail();
                     if (mail != null && mail.hasUnclaimedAttachments()) {
-                        t.addLine(IKey.str(EnumChatFormatting.YELLOW + "需先领取附件"));
+                        t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.mail.012")));
                     }
                 })
                 .tooltipAutoUpdate(true)
@@ -585,7 +587,7 @@ public class MailGui {
 
         // ---- 收件人 ----
         view.child(
-            new TextWidget<>(IKey.str("收件人:")).pos(4, 3)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.mail.013"))).pos(4, 3)
                 .size(38, 10)
                 .shadow(false));
         TextFieldWidget recipientField = new TextFieldWidget()
@@ -594,15 +596,15 @@ public class MailGui {
         recipientField.pos(FIELD_X, 0)
             .size(FIELD_W, FIELD_H);
         recipientField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("收件玩家名（需在本服务器登录过）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "最长 " + MailActionPacket.MAX_RECIPIENT_LENGTH + " 字符"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.mail.014")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.015") + MailActionPacket.MAX_RECIPIENT_LENGTH + VendingUiText.tr("gtit.ui.mail.016")));
         });
         recipientField.tooltipAutoUpdate(true);
         view.child(recipientField);
 
         // ---- 标题 ----
         view.child(
-            new TextWidget<>(IKey.str("标题:")).pos(4, 21)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.mail.017"))).pos(4, 21)
                 .size(38, 10)
                 .shadow(false));
         TextFieldWidget titleField = new TextFieldWidget()
@@ -611,15 +613,15 @@ public class MailGui {
         titleField.pos(FIELD_X, 18)
             .size(FIELD_W, FIELD_H);
         titleField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("邮件标题（可留空，寄出后自动补默认标题）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "最长 " + MailActionPacket.MAX_TITLE_LENGTH + " 字符"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.mail.018")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.019") + MailActionPacket.MAX_TITLE_LENGTH + VendingUiText.tr("gtit.ui.mail.020")));
         });
         titleField.tooltipAutoUpdate(true);
         view.child(titleField);
 
         // ---- 正文（多行编辑器） ----
         view.child(
-            new TextWidget<>(IKey.str("正文:")).pos(4, 38)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.mail.021"))).pos(4, 38)
                 .size(38, 10)
                 .shadow(false));
         composeEditor = new NekoComposeTextEditor();
@@ -628,22 +630,22 @@ public class MailGui {
         // 恢复上次草稿 + 注册变化监听（实时回写草稿字段，GUI 重建后可恢复）
         composeEditor.setComposeText(composeContent);
         composeEditor.setChangeListener(text -> composeContent = text);
-        composeEditor.hintText("在此输入正文…");
+        composeEditor.hintText(VendingUiText.tr("gtit.ui.mail.022"));
         composeEditor.tooltipBuilder(
-            t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + "最长 " + MailActionPacket.MAX_CONTENT_LENGTH + " 字符")));
+            t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.023") + MailActionPacket.MAX_CONTENT_LENGTH + VendingUiText.tr("gtit.ui.mail.024"))));
         composeEditor.tooltipAutoUpdate(true);
         view.child(composeEditor);
 
         // ---- 附件说明 ----
         view.child(
             new TextWidget<>(
-                IKey.str(EnumChatFormatting.GRAY + "附件：机器输入槽中的物品将随信寄出（≤" + MailManager.MAX_ATTACHMENTS + "格）"))
+                IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.025") + MailManager.MAX_ATTACHMENTS + VendingUiText.tr("gtit.ui.mail.026")))
                     .pos(4, EDITOR_Y + EDITOR_H + 4)
                     .size(166, 8)
                     .scale(0.7f)
                     .shadow(false));
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "投递成功后才扣取物品；发送结果见聊天栏")).pos(4, EDITOR_Y + EDITOR_H + 13)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.027"))).pos(4, EDITOR_Y + EDITOR_H + 13)
                 .size(166, 8)
                 .scale(0.7f)
                 .shadow(false));
@@ -654,12 +656,12 @@ public class MailGui {
                 .size(48, 20)
                 .background(NekoGuiTextures.MAIL_BTN_CLAIM)
                 .disableHoverBackground()
-                .overlay(IKey.str(EnumChatFormatting.WHITE + "发送"))
+                .overlay(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.mail.028")))
                 .tooltipBuilder(t -> {
-                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "寄出邮件"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "输入槽中的物品将作为附件（≤5格）"));
+                    t.addLine(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.mail.029")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.030")));
                     if (machine == null) {
-                        t.addLine(IKey.str(EnumChatFormatting.RED + "无法定位机器，发送不可用"));
+                        t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.mail.031")));
                     }
                 })
                 .tooltipAutoUpdate(true)
@@ -671,8 +673,8 @@ public class MailGui {
             new ButtonWidget<>().pos(89, COMPOSE_BTN_Y)
                 .size(48, 20)
                 .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
-                .overlay(IKey.str(EnumChatFormatting.WHITE + "清空"))
-                .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + "清空收件人/标题/正文")))
+                .overlay(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.mail.032")))
+                .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.033"))))
                 .tooltipAutoUpdate(true)
                 .onMouseTapped(mouse -> {
                     if (mouse != 0) return false;
@@ -765,9 +767,9 @@ public class MailGui {
 
     /** 类型显示名（详情/悬浮提示用） */
     private static String typeDisplayName(String type) {
-        if (Mail.TYPE_PLAYER.equals(type)) return "玩家";
-        if (Mail.TYPE_ADMIN.equals(type)) return "管理员";
-        return "系统";
+        if (Mail.TYPE_PLAYER.equals(type)) return VendingUiText.tr("gtit.ui.mail.034");
+        if (Mail.TYPE_ADMIN.equals(type)) return VendingUiText.tr("gtit.ui.mail.035");
+        return VendingUiText.tr("gtit.ui.mail.036");
     }
 
     /** 条目底纹理：未读/已读 */
@@ -838,7 +840,7 @@ public class MailGui {
         if (mail != null) {
             t.addLine(
                 IKey.str(
-                    mail.isAttachmentClaimed() ? EnumChatFormatting.GRAY + "已领取" : EnumChatFormatting.YELLOW + "待领取"));
+                    mail.isAttachmentClaimed() ? EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.mail.037") : EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.mail.038")));
         }
     }
 
