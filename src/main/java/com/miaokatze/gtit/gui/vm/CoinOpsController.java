@@ -382,7 +382,7 @@ public final class CoinOpsController {
                 if (emptySlots - queuedItems <= 0) {
                     // 输出槽已满（含队列堆积），不扣钱，提示玩家
                     LOG.warn("[NekoVMV2] doNekoEjectCoin 输出槽已满，取消弹出货币 {}", currencyId);
-                    tradeResultNotifier.accept("出货槽已满，无法弹出猫猫币");
+                    tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.001"));
                     return;
                 }
                 multiblock.dispenseItemStacks(toDispense);
@@ -439,7 +439,7 @@ public final class CoinOpsController {
                 int queuedItems = multiblock.getOutputBufferSize();
                 if (emptySlots - queuedItems <= 0) {
                     LOG.warn("[NekoVMV2] doNekoEjectCoinStack 输出槽已满，取消弹出货币 {}", currencyId);
-                    tradeResultNotifier.accept("出货槽已满，无法弹出猫猫币");
+                    tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.002"));
                     return;
                 }
                 multiblock.dispenseItemStacks(toDispense);
@@ -649,15 +649,15 @@ public final class CoinOpsController {
             }
 
             if (totalImported > 0) {
-                tradeMessageSetter.accept("成功导入 " + totalImported + " 个猫猫币");
+                tradeMessageSetter.accept(VendingUiText.tr("gtit.ui.coins.003") + totalImported + VendingUiText.tr("gtit.ui.coins.004"));
                 LOG.debug("[NekoImportCoins] 总计导入: totalImported=" + totalImported);
             } else {
-                tradeMessageSetter.accept("输入槽中未找到猫猫币");
+                tradeMessageSetter.accept(VendingUiText.tr("gtit.ui.coins.005"));
                 LOG.debug("[NekoImportCoins] 总计导入: totalImported=0（未找到猫猫币）");
             }
         } catch (Throwable t) {
             LOG.error("[NekoVMV2] doNekoImportCoins 异常!", t);
-            tradeMessageSetter.accept("导入猫猫币失败");
+            tradeMessageSetter.accept(VendingUiText.tr("gtit.ui.coins.006"));
         } finally {
             nekoImportCoins = false;
         }
@@ -680,19 +680,19 @@ public final class CoinOpsController {
         try {
             UUID playerId = getPlayerId();
             if (playerId == null || multiblock == null || !multiblock.hasUplink()) {
-                tradeResultNotifier.accept("未连接 Uplink，无法从 ME 导入");
+                tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.007"));
                 return;
             }
             // 查询 ME 余额
             int meAmount = multiblock.getUplinkCurrencyAmount(currencyId);
             if (meAmount <= 0) {
-                tradeResultNotifier.accept("ME 网络中无" + NekoCurrencyRegistrar.getDisplayName(currencyId));
+                tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.008") + NekoCurrencyRegistrar.getDisplayName(currencyId));
                 return;
             }
             // 从 ME 提取（extractFromUplink 返回未满足的剩余数量）
             ItemStack coinStack = NekoCurrencyRegistrar.getItemStack(currencyId, meAmount);
             if (coinStack == null) {
-                tradeResultNotifier.accept("货币物品栈创建失败");
+                tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.009"));
                 return;
             }
             int remain = multiblock.extractFromUplink(coinStack);
@@ -715,14 +715,14 @@ public final class CoinOpsController {
                     // 标记可交易状态为脏（钱包余额变化影响可交易性）
                     markTradeableStatusDirtyAndNotify.run();
                     tradeResultNotifier
-                        .accept("从 ME 导入 " + extracted + " 个" + NekoCurrencyRegistrar.getDisplayName(currencyId));
+                        .accept(VendingUiText.tr("gtit.ui.coins.010") + extracted + VendingUiText.tr("gtit.ui.coins.011") + NekoCurrencyRegistrar.getDisplayName(currencyId));
                 }
             } else {
-                tradeResultNotifier.accept("ME 提取失败");
+                tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.012"));
             }
         } catch (Throwable t) {
             LOG.error("[NekoVMV2] doNekoImportMeCoin 异常!", t);
-            tradeResultNotifier.accept("ME 货币导入失败");
+            tradeResultNotifier.accept(VendingUiText.tr("gtit.ui.coins.013"));
         } finally {
             nekoImportMeCoin.put(currencyId, false);
         }
