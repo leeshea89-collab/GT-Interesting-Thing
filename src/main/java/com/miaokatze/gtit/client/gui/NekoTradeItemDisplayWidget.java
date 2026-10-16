@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.client.gui;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -533,7 +535,7 @@ public class NekoTradeItemDisplayWidget extends ItemDisplayWidget implements Int
         boolean hasRequirements = display.hasInputs() || display.hasCurrencyCost();
         if (hasRequirements) {
             builder.emptyLine();
-            builder.addLine(EnumChatFormatting.DARK_GREEN + "" + EnumChatFormatting.ITALIC + "需求:");
+            builder.addLine(EnumChatFormatting.DARK_GREEN + "" + EnumChatFormatting.ITALIC + VendingUiText.tr("gtit.ui.tradeitem.001"));
 
             // 猫猫币花费
             if (display.hasCurrencyCost()) {
@@ -555,13 +557,13 @@ public class NekoTradeItemDisplayWidget extends ItemDisplayWidget implements Int
         // --- BQ 锁定状态（金色）---
         if (display.isBqLocked()) {
             builder.emptyLine();
-            builder.addLine(EnumChatFormatting.GOLD + "[BQ锁定] 前置任务未完成");
+            builder.addLine(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.tradeitem.002"));
         }
 
         // --- 冷却时间（青色）---
         if (display.getCooldownRemaining() > 0) {
             builder.emptyLine();
-            builder.addLine(EnumChatFormatting.AQUA + "冷却剩余: " + formatCooldown(display.getCooldownRemaining()));
+            builder.addLine(EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.tradeitem.003") + formatCooldown(display.getCooldownRemaining()));
         }
 
         // --- 团队缩放信息（深青色）---
@@ -571,13 +573,13 @@ public class NekoTradeItemDisplayWidget extends ItemDisplayWidget implements Int
         if (maxTrades > 1) {
             long usedTrades = display.getUsedTradesInCooldown();
             long remaining = Math.max(0, maxTrades - usedTrades);
-            builder.addLine(EnumChatFormatting.DARK_AQUA + "冷却次数: " + remaining + "/" + maxTrades + " (团队缩放)");
+            builder.addLine(EnumChatFormatting.DARK_AQUA + VendingUiText.tr("gtit.ui.tradeitem.004") + remaining + "/" + maxTrades + VendingUiText.tr("gtit.ui.tradeitem.005"));
         }
 
         // --- 操作提示（灰色）---
         builder.emptyLine();
-        builder.addLine(EnumChatFormatting.GRAY + "Shift+点击 执行交易");
-        builder.addLine(EnumChatFormatting.GRAY + "Ctrl+点击 收藏/取消收藏");
+        builder.addLine(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradeitem.006"));
+        builder.addLine(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradeitem.007"));
     }
 
     // ==================== 鼠标交互 ====================
