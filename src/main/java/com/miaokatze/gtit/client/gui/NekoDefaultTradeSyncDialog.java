@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.client.gui;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.function.IntConsumer;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -72,7 +74,7 @@ public class NekoDefaultTradeSyncDialog extends Dialog<Integer> {
     /** 提示文案（按模式取文案） */
     private TextWidget<?> buildMessage() {
         return new TextWidget<>(
-            IKey.dynamic(() -> EnumChatFormatting.WHITE + (this.forceMode ? "默认贸易组已更新。" : "检测到默认贸易组更新，是否同步？"))).top(12)
+            IKey.dynamic(() -> EnumChatFormatting.WHITE + (this.forceMode ? VendingUiText.tr("gtit.ui.sync.001") : VendingUiText.tr("gtit.ui.sync.002")))).top(12)
                 .widthRel(0.9f)
                 .height(24)
                 .horizontalCenter();
@@ -93,7 +95,7 @@ public class NekoDefaultTradeSyncDialog extends Dialog<Integer> {
             return row.child(
                 new ButtonWidget<>().size(60, 16)
                     .left(65)
-                    .overlay(IKey.str("知道了"))
+                    .overlay(IKey.str(VendingUiText.tr("gtit.ui.sync.003")))
                     .onMouseTapped(mouse -> {
                         this.closeWith(RESULT_ACK);
                         return true;
@@ -102,7 +104,7 @@ public class NekoDefaultTradeSyncDialog extends Dialog<Integer> {
         return row.child(
             new ButtonWidget<>().size(36, 16)
                 .left(7)
-                .overlay(IKey.str("是"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.sync.004")))
                 .onMouseTapped(mouse -> {
                     this.closeWith(RESULT_RESTORE);
                     return true;
@@ -110,7 +112,7 @@ public class NekoDefaultTradeSyncDialog extends Dialog<Integer> {
             .child(
                 new ButtonWidget<>().size(36, 16)
                     .left(47)
-                    .overlay(IKey.str("否"))
+                    .overlay(IKey.str(VendingUiText.tr("gtit.ui.sync.005")))
                     .onMouseTapped(mouse -> {
                         this.closeWith(RESULT_DISMISS);
                         return true;
@@ -118,8 +120,8 @@ public class NekoDefaultTradeSyncDialog extends Dialog<Integer> {
             .child(
                 new ButtonWidget<>().size(96, 16)
                     .left(87)
-                    .overlay(IKey.str("否且不再通知"))
-                    .tooltipBuilder(t -> t.addLine(IKey.str("保持现状，且后续默认贸易组例行更新不再询问（更新标签强制覆盖不受影响）")))
+                    .overlay(IKey.str(VendingUiText.tr("gtit.ui.sync.006")))
+                    .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.sync.007"))))
                     .onMouseTapped(mouse -> {
                         this.closeWith(RESULT_NEVER);
                         return true;
