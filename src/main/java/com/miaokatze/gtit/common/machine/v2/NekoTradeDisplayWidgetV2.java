@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.common.machine.v2;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -162,7 +164,7 @@ public class NekoTradeDisplayWidgetV2 extends ItemDisplayWidget implements Inter
             .isEmpty() || !currencyEntries.isEmpty();
         if (hasRequirements) {
             builder.emptyLine();
-            builder.addLine(EnumChatFormatting.DARK_GREEN + "" + EnumChatFormatting.ITALIC + "需求:");
+            builder.addLine(EnumChatFormatting.DARK_GREEN + "" + EnumChatFormatting.ITALIC + VendingUiText.tr("gtit.ui.tradedisplay.001"));
 
             // 猫猫币花费（逐条货币一行）
             for (NekoBigItemStack currencyEntry : currencyEntries) {
@@ -191,18 +193,18 @@ public class NekoTradeDisplayWidgetV2 extends ItemDisplayWidget implements Inter
         // --- BQ 锁定状态（金色）---
         if (bqLocked) {
             builder.emptyLine();
-            builder.addLine(EnumChatFormatting.GOLD + "[BQ锁定] 前置任务未完成");
+            builder.addLine(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.tradedisplay.002"));
         }
 
         // --- 冷却时间（青色）---
         if (cooldownRemaining > 0) {
             builder.emptyLine();
-            builder.addLine(EnumChatFormatting.AQUA + "冷却剩余: " + cooldownRemaining + "秒");
+            builder.addLine(EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.tradedisplay.003") + cooldownRemaining + VendingUiText.tr("gtit.ui.tradedisplay.004"));
         }
 
         // --- 操作提示（灰色）---
         builder.emptyLine();
-        builder.addLine(EnumChatFormatting.GRAY + "Shift+点击 执行交易");
+        builder.addLine(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradedisplay.005"));
     }
 
     // ==================== 自定义渲染 ====================
