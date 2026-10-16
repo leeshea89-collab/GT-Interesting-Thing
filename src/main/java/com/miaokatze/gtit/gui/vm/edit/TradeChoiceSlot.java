@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.UpOrDown;
@@ -32,17 +34,17 @@ final class TradeChoiceSlot extends ItemDisplayWidget
         background(GuiTextures.SLOT_ITEM);
         tooltipAutoUpdate(true);
         tooltipBuilder(t -> {
-            t.addLine("Alt+左键：开启/关闭多重叠加；开启后放入物品追加选项");
-            t.addLine("中键：编辑最后选项矿词与数量（空矿词恢复精确物品）");
-            t.addLine("右键：移除最后选项；Shift+右键：清空；滚轮：调整最后选项数量");
-            t.addLine(editor.isAppend(index) ? "§a多重叠加已开启" : "§7多重叠加未开启");
+            t.addLine(VendingUiText.tr("gtit.ui.choiceslot.001"));
+            t.addLine(VendingUiText.tr("gtit.ui.choiceslot.002"));
+            t.addLine(VendingUiText.tr("gtit.ui.choiceslot.003"));
+            t.addLine(editor.isAppend(index) ? VendingUiText.tr("gtit.ui.choiceslot.004") : VendingUiText.tr("gtit.ui.choiceslot.005"));
             NekoBigItemStack choice = editor.choice(index);
             if (choice != null) {
-                t.addLine(index < 16 ? "每笔完整满足一项；矿词可混合同词物品" : "每笔随机选择一项；矿词再随机选择一种物品");
+                t.addLine(index < 16 ? VendingUiText.tr("gtit.ui.choiceslot.006") : VendingUiText.tr("gtit.ui.choiceslot.007"));
                 describe(t, choice);
                 for (NekoBigItemStack option : choice.getAlternatives()) describe(t, option);
                 if (index < 16 && (choice.hasOreDict() || !choice.getAlternatives()
-                    .isEmpty())) t.addLine("需求中的精确猫猫币选项可使用钱包；矿词选项仅匹配实体物品");
+                    .isEmpty())) t.addLine(VendingUiText.tr("gtit.ui.choiceslot.008"));
             }
         });
     }
@@ -50,7 +52,7 @@ final class TradeChoiceSlot extends ItemDisplayWidget
     private static void describe(com.cleanroommc.modularui.screen.RichTooltip t, NekoBigItemStack option) {
         t.addLine(
             option.getStackSize() + " × "
-                + (option.hasOreDict() ? "矿词 [" + option.getOreDict() + "]"
+                + (option.hasOreDict() ? VendingUiText.tr("gtit.ui.choiceslot.009") + option.getOreDict() + "]"
                     : option.getBaseStack()
                         .getDisplayName()));
     }
