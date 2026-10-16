@@ -1080,3 +1080,17 @@ gtit.ui.mail.035=管理员
 gtit.ui.mail.036=系统
 gtit.ui.mail.037=已领取
 gtit.ui.mail.038=待领取
+
+# Neko coin display, trade choices, and status labels
+gtit.ui.coindisplay.001=ME 网络: 
+gtit.ui.coindisplay.002=Shift 点击弹出全部 / Ctrl 点击弹出一组
+gtit.ui.coindisplay.003=从 ME 网络导入
+gtit.ui.coindisplay.004=ME 余额: 
+gtit.ui.tradeiteminfo.001=随机产出一项：
+gtit.ui.tradeiteminfo.002=完整满足以下一项：
+gtit.ui.tradeiteminfo.003=矿词 [
+gtit.ui.tradeiteminfo.004=（随机物品）
+gtit.ui.status.001=未知
+gtit.ui.status.002=收藏
+gtit.ui.status.003=未知
+gtit.ui.status.004=未知
