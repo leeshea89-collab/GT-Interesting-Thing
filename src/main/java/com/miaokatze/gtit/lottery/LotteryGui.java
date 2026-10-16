@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.lottery;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.List;
 import java.util.Locale;
 
@@ -223,14 +225,14 @@ public class LotteryGui {
     /** 标题行：「猫猫扭蛋 - 池名」（金色，居中；编辑模式附加红色标识） */
     private static IWidget createTitle(LotteryEditCallback editCallback) {
         return new TextWidget<>(IKey.dynamic(() -> {
-            String text = EnumChatFormatting.GOLD + "猫猫扭蛋";
+            String text = EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.lottery.001");
             // v1.7.6：池切换迁至左侧标签列，标题附加当前选中池名作指示
             LotteryClientData.PoolSummary pool = LotteryClientData.getSelectedPool();
             if (pool != null && pool.name != null && !pool.name.isEmpty()) {
                 text += EnumChatFormatting.YELLOW + " - " + pool.name;
             }
             if (editCallback != null && editCallback.isEditMode()) {
-                text += EnumChatFormatting.RED + " [编辑]";
+                text += EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.002");
             }
             return text;
         })).pos(0, 2)
@@ -274,7 +276,7 @@ public class LotteryGui {
      * 完整货币名见按钮 tooltip 明细。
      */
     private static String costSummary(LotteryClientData.PoolSummary pool, int count) {
-        if (pool == null || pool.costItems.isEmpty()) return "免费";
+        if (pool == null || pool.costItems.isEmpty()) return VendingUiText.tr("gtit.ui.lottery.003");
         StringBuilder sb = new StringBuilder();
         for (com.miaokatze.gtit.trade.v2.NekoBigItemStack cost : pool.costItems) {
             if (cost == null || cost.getBaseStack() == null || cost.getStackSize() <= 0) continue;
@@ -291,7 +293,7 @@ public class LotteryGui {
                             .getDisplayName());
             }
         }
-        return sb.length() == 0 ? "免费" : sb.toString();
+        return sb.length() == 0 ? VendingUiText.tr("gtit.ui.lottery.004") : sb.toString();
     }
 
     /**
@@ -303,8 +305,8 @@ public class LotteryGui {
      * </ul>
      */
     private static String shortCurrencyName(String currencyId) {
-        if (NekoCurrencyRegistrar.NEKO_ID.equals(currencyId)) return "币";
-        if (NekoCurrencyRegistrar.SHIMMERING_NEKO_ID.equals(currencyId)) return "闪币";
+        if (NekoCurrencyRegistrar.NEKO_ID.equals(currencyId)) return VendingUiText.tr("gtit.ui.lottery.005");
+        if (NekoCurrencyRegistrar.SHIMMERING_NEKO_ID.equals(currencyId)) return VendingUiText.tr("gtit.ui.lottery.006");
         return currencyName(currencyId);
     }
 
@@ -371,7 +373,7 @@ public class LotteryGui {
             slotTooltip(t, index);
             LotteryEntry entry = entryAt(index);
             if (entry != null && editCallback != null && editCallback.isEditMode()) {
-                t.addLine(IKey.str(EnumChatFormatting.YELLOW + "[编辑模式] 点击编辑此条目（" + entry.getId() + "）"));
+                t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.lottery.007") + entry.getId() + "）"));
             }
         })
             .tooltipAutoUpdate(true);
@@ -497,19 +499,19 @@ public class LotteryGui {
         LotteryEntry entry = entryAt(index);
         if (entry == null) return;
         if (entry.isEmptyPlaceholder()) {
-            t.addLine(IKey.str("空奖品槽（" + entry.getId() + "）"));
-            t.addLine(IKey.str("进入编辑模式配置奖品，将权重设为正后启用"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lottery.008") + entry.getId() + "）"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.lottery.009")));
             return;
         }
         ItemStack stack = entry.getDisplayStack();
         String name = stack != null ? stack.getDisplayName() : entry.getId();
         LotteryRarity rarity = entry.getRarity();
         t.addLine(IKey.str(rarity.getColor() + name));
-        t.addLine(IKey.str(EnumChatFormatting.GRAY + "稀有度：" + rarity.getColor() + rarity.getDisplayName()));
+        t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lottery.010") + rarity.getColor() + rarity.getDisplayName()));
         if (entry.getMinAmount() != entry.getMaxAmount()) {
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "数量：" + entry.getMinAmount() + " ~ " + entry.getMaxAmount()));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lottery.011") + entry.getMinAmount() + " ~ " + entry.getMaxAmount()));
         } else {
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "数量：" + entry.getMinAmount()));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lottery.012") + entry.getMinAmount()));
         }
         LotteryClientData.PoolSummary pool = LotteryClientData.getSelectedPool();
         if (pool != null && pool.entries.size() > 0) {
@@ -519,7 +521,7 @@ public class LotteryGui {
             }
             if (totalWeight > 0) {
                 String pct = String.format(Locale.ROOT, "%.2f", 100.0 * entry.getWeight() / totalWeight);
-                t.addLine(IKey.str(EnumChatFormatting.DARK_GRAY + "概率：" + pct + "%"));
+                t.addLine(IKey.str(EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.lottery.013") + pct + "%"));
             }
         }
     }
@@ -629,11 +631,11 @@ public class LotteryGui {
             if (System.currentTimeMillis() - LotteryClientData.getLastResultTimeMs() > RESULT_DISPLAY_MS) return "";
             switch (code) {
                 case LotteryClientData.RESULT_INSUFFICIENT:
-                    return EnumChatFormatting.RED + "消耗不足（猫猫币或需求物品不够），无法抽取";
+                    return EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.014");
                 case LotteryClientData.RESULT_POOL_MISSING:
-                    return EnumChatFormatting.RED + "卡池不存在或暂不可用";
+                    return EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.015");
                 case LotteryClientData.RESULT_ERROR:
-                    return EnumChatFormatting.RED + "抽奖失败，请稍后再试";
+                    return EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.016");
                 default:
                     return "";
             }
@@ -651,11 +653,11 @@ public class LotteryGui {
     private static String successSummary() {
         List<LotteryClientData.DrawResult> results = LotteryClientData.getLastResults();
         if (results.isEmpty()) return "";
-        if (!isResultRevealed()) return EnumChatFormatting.YELLOW + "抽取中...";
+        if (!isResultRevealed()) return EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.lottery.017");
         if (results.size() > 1) {
             // 10 连：揭示后提示最高奖（列表区已展示全部）
             LotteryClientData.DrawResult best = bestResult(results);
-            return resultText(best, EnumChatFormatting.GOLD + "10 连最高奖：");
+            return resultText(best, EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.lottery.018"));
         }
         // 单抽：揭示后展示
         return resultText(results.get(0), "");
@@ -668,7 +670,7 @@ public class LotteryGui {
         String name = resultEntryName(result);
         String text = prefix + rarity.getColor() + name + EnumChatFormatting.WHITE + " ×" + result.amount;
         if (result.isPity) {
-            text += EnumChatFormatting.LIGHT_PURPLE + "（保底）";
+            text += EnumChatFormatting.LIGHT_PURPLE + VendingUiText.tr("gtit.ui.lottery.019");
         }
         return text;
     }
@@ -793,9 +795,9 @@ public class LotteryGui {
         LotteryRarity rarity = result.rarity();
         t.addLine(
             IKey.str(rarity.getColor() + resultEntryName(result) + EnumChatFormatting.WHITE + " ×" + result.amount));
-        t.addLine(IKey.str(EnumChatFormatting.GRAY + "稀有度：" + rarity.getColor() + rarity.getDisplayName()));
+        t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lottery.020") + rarity.getColor() + rarity.getDisplayName()));
         if (result.isPity) {
-            t.addLine(IKey.str(EnumChatFormatting.LIGHT_PURPLE + "保底出货"));
+            t.addLine(IKey.str(EnumChatFormatting.LIGHT_PURPLE + VendingUiText.tr("gtit.ui.lottery.021")));
         }
     }
 
@@ -830,7 +832,7 @@ public class LotteryGui {
             LotteryClientData.PoolSummary pool = LotteryClientData.getSelectedPool();
             if (pool == null) return "";
             if (!pool.pityEnabled || pool.hardPityThreshold <= 0) {
-                return "本池无保底"; // 主体走 widget color（0xFF3F3F3F）
+                return VendingUiText.tr("gtit.ui.lottery.022"); // 主体走 widget color（0xFF3F3F3F）
             }
             int pity = LotteryClientData.getPityCounter(pool.id);
             LotteryRarity guaranteed = LotteryRarity.fromString(pool.guaranteedRarity);
@@ -843,14 +845,14 @@ public class LotteryGui {
                     break;
                 }
             }
-            if (!hasPityPrize) return "未配置保底奖品";
+            if (!hasPityPrize) return VendingUiText.tr("gtit.ui.lottery.023");
             // 主体不带格式码（走 widget color 深灰），仅保底计数内嵌稀有度色，§r 恢复主体色
-            return "距保底 " + guaranteed.getColor()
+            return VendingUiText.tr("gtit.ui.lottery.024") + guaranteed.getColor()
                 + pity
                 + "/"
                 + pool.hardPityThreshold
                 + EnumChatFormatting.RESET
-                + "（必出"
+                + VendingUiText.tr("gtit.ui.lottery.025")
                 + guaranteed.getDisplayName()
                 + "+）";
         })).pos(0, 0)
@@ -896,14 +898,14 @@ public class LotteryGui {
         int totalW = 2 * DRAW_BTN_W + DRAW_BTN_GAP;
         int startX = (PAGE_WIDTH - totalW) / 2;
 
-        row.child(createDrawButton(machine, startX, 1, NekoGuiTextures.LOTTERY_BTN_DRAW, "抽1次", editCallback));
+        row.child(createDrawButton(machine, startX, 1, NekoGuiTextures.LOTTERY_BTN_DRAW, VendingUiText.tr("gtit.ui.lottery.026"), editCallback));
         row.child(
             createDrawButton(
                 machine,
                 startX + DRAW_BTN_W + DRAW_BTN_GAP,
                 10,
                 NekoGuiTextures.LOTTERY_BTN_DRAW10,
-                "抽10次",
+                VendingUiText.tr("gtit.ui.lottery.027"),
                 editCallback));
         return row;
     }
@@ -918,21 +920,21 @@ public class LotteryGui {
             .tooltipBuilder(t -> {
                 // 编辑模式：仅提示，不展示价格/余额
                 if (editCallback != null && editCallback.isEditMode()) {
-                    t.addLine(IKey.str(EnumChatFormatting.RED + "[编辑模式] 抽奖交互已禁用"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "点击轮盘槽位编辑条目"));
+                    t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.028")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.lottery.029")));
                     return;
                 }
                 LotteryClientData.PoolSummary pool = LotteryClientData.getSelectedPool();
                 if (pool == null) {
-                    t.addLine(IKey.str(EnumChatFormatting.RED + "暂无可用卡池"));
+                    t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.030")));
                     return;
                 }
                 if (!hasDrawablePrize(pool)) {
-                    t.addLine(IKey.str(EnumChatFormatting.RED + "奖池尚未配置有效奖品，请进入编辑模式配置"));
+                    t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.031")));
                     return;
                 }
                 // v1.7.6 costItems 口径：逐条列出消耗（货币条目带团队余额）
-                t.addLine(IKey.str(EnumChatFormatting.YELLOW + label + " 消耗："));
+                t.addLine(IKey.str(EnumChatFormatting.YELLOW + label + VendingUiText.tr("gtit.ui.lottery.032")));
                 boolean anyCost = false;
                 for (com.miaokatze.gtit.trade.v2.NekoBigItemStack cost : pool.costItems) {
                     if (cost == null || cost.getBaseStack() == null || cost.getStackSize() <= 0) continue;
@@ -942,7 +944,7 @@ public class LotteryGui {
                     if (cid != null) {
                         int balance = NekoClientBalances.getBalance(cid);
                         EnumChatFormatting color = balance < total ? EnumChatFormatting.RED : EnumChatFormatting.GRAY;
-                        t.addLine(IKey.str(color + "  " + total + " " + currencyName(cid) + "（钱包 " + balance + "）"));
+                        t.addLine(IKey.str(color + "  " + total + " " + currencyName(cid) + VendingUiText.tr("gtit.ui.lottery.033") + balance + "）"));
                     } else {
                         t.addLine(
                             IKey.str(
@@ -952,21 +954,21 @@ public class LotteryGui {
                                     + cost.getBaseStack()
                                         .getDisplayName()
                                     + EnumChatFormatting.DARK_GRAY
-                                    + "（自输入槽）"));
+                                    + VendingUiText.tr("gtit.ui.lottery.034")));
                     }
                 }
                 if (!anyCost) {
-                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "  免费"));
+                    t.addLine(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.lottery.035")));
                 }
                 if (!currencyAffordable(pool, count)) {
-                    t.addLine(IKey.str(EnumChatFormatting.RED + "团队钱包余额不足"));
+                    t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.lottery.036")));
                 } else {
-                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "点击抽取，奖品入出货槽"));
+                    t.addLine(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.lottery.037")));
                 }
                 if (pool.pityEnabled && pool.hardPityThreshold > 0) {
                     int pity = LotteryClientData.getPityCounter(pool.id);
                     t.addLine(
-                        IKey.str(EnumChatFormatting.LIGHT_PURPLE + "保底进度：" + pity + "/" + pool.hardPityThreshold));
+                        IKey.str(EnumChatFormatting.LIGHT_PURPLE + VendingUiText.tr("gtit.ui.lottery.038") + pity + "/" + pool.hardPityThreshold));
                 }
             })
             .tooltipAutoUpdate(true)
@@ -1019,7 +1021,7 @@ public class LotteryGui {
     private static String drawButtonText(String label, int count) {
         LotteryClientData.PoolSummary pool = LotteryClientData.getSelectedPool();
         if (pool == null) return EnumChatFormatting.DARK_GRAY + label;
-        if (!hasDrawablePrize(pool)) return EnumChatFormatting.DARK_GRAY + "未配置奖品";
+        if (!hasDrawablePrize(pool)) return EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.lottery.039");
         EnumChatFormatting color = currencyAffordable(pool, count) ? EnumChatFormatting.WHITE : EnumChatFormatting.RED;
         return color + truncateToWidth(label + " " + costSummary(pool, count), DRAW_BTN_TEXT_BUDGET);
     }
