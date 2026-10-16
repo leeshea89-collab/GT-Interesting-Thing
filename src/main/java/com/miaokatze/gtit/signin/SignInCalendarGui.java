@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.signin;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.Calendar;
 import java.util.List;
 
@@ -258,7 +260,7 @@ public class SignInCalendarGui {
     private static final int COLOR_PROGRESS_FILL = 0xFFFFC84A;
 
     /** 星期表头（周一开头） */
-    private static final String[] WEEKDAY_LABELS = { "一", "二", "三", "四", "五", "六", "日" };
+    private static final String[] WEEKDAY_LABELS = { VendingUiText.tr("gtit.ui.calendar.weekday.mon"), VendingUiText.tr("gtit.ui.calendar.weekday.tue"), VendingUiText.tr("gtit.ui.calendar.weekday.wed"), VendingUiText.tr("gtit.ui.calendar.weekday.thu"), VendingUiText.tr("gtit.ui.calendar.weekday.fri"), VendingUiText.tr("gtit.ui.calendar.weekday.sat"), VendingUiText.tr("gtit.ui.calendar.weekday.sun") };
 
     /** 当月信息缓存（按 yyyy-MM 缓存，跨月自动重算） */
     private static MonthInfo monthInfoCache;
@@ -317,9 +319,9 @@ public class SignInCalendarGui {
     /** 公共标题行：「每日活跃」（金色居中；编辑模式附加红色标识） */
     private static IWidget createContainerTitle(SignInEditCallback editCallback) {
         return new TextWidget<>(IKey.dynamic(() -> {
-            String text = EnumChatFormatting.GOLD + "每日活跃";
+            String text = EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.001");
             if (editCallback != null && editCallback.isEditMode()) {
-                text += EnumChatFormatting.RED + " [编辑]";
+                text += EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.calendar.002");
             }
             return text;
         })).pos(0, 2)
@@ -354,7 +356,7 @@ public class SignInCalendarGui {
     private static IWidget createMonthTitle() {
         return new TextWidget<>(IKey.dynamic(() -> {
             MonthInfo mi = getMonthInfo();
-            return EnumChatFormatting.YELLOW + "签到日历 " + mi.year + "年" + mi.month + "月";
+            return EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.003") + mi.year + VendingUiText.tr("gtit.ui.calendar.004") + mi.month + VendingUiText.tr("gtit.ui.calendar.005");
         })).pos(0, 0)
             .size(PAGE_WIDTH, 10)
             .textAlign(Alignment.Center)
@@ -365,15 +367,15 @@ public class SignInCalendarGui {
     private static IWidget createStatusInfo() {
         return new TextWidget<>(
             IKey.dynamic(
-                () -> EnumChatFormatting.AQUA + "累计签到 "
+                () -> EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.calendar.006")
                     + SignInClientData.getTotalDays()
-                    + " 天"
+                    + VendingUiText.tr("gtit.ui.calendar.007")
                     + EnumChatFormatting.DARK_GRAY
                     + " · "
                     + EnumChatFormatting.GOLD
-                    + "连续 "
+                    + VendingUiText.tr("gtit.ui.calendar.008")
                     + SignInClientData.getConsecutiveDays()
-                    + " 天")).pos(0, 12)
+                    + VendingUiText.tr("gtit.ui.calendar.009"))).pos(0, 12)
                         .size(PAGE_WIDTH, 10)
                         .textAlign(Alignment.Center)
                         .shadow(false);
@@ -480,24 +482,24 @@ public class SignInCalendarGui {
         MonthInfo mi = getMonthInfo();
         int day = Integer.parseInt(date.substring(8));
         boolean weekend = DailySignInConfig.isWeekend(date);
-        t.addLine(IKey.str("" + EnumChatFormatting.GOLD + mi.month + "月" + day + "日" + (weekend ? "（周末）" : "（工作日）")));
+        t.addLine(IKey.str("" + EnumChatFormatting.GOLD + mi.month + VendingUiText.tr("gtit.ui.calendar.010") + day + VendingUiText.tr("gtit.ui.calendar.011") + (weekend ? VendingUiText.tr("gtit.ui.calendar.012") : VendingUiText.tr("gtit.ui.calendar.013"))));
         // 奖励读客户端缓存（服务端同步快照优先）
         boolean overridden = SignInClientData.hasDayOverride(date);
         SignInReward reward = SignInClientData.getEffectiveDayReward(date);
         // v1.7.29 统一文案为「奖励：」，覆盖/默认状态改用颜色区分
         if (overridden) {
-            t.addLine(IKey.str(EnumChatFormatting.AQUA + "奖励：" + buildRewardText(reward)));
+            t.addLine(IKey.str(EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.calendar.014") + buildRewardText(reward)));
         } else {
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "奖励：" + buildRewardText(reward)));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.015") + buildRewardText(reward)));
             // 递增提示：仅默认奖励参与递增（覆盖天不递增）
             if (SignInClientData.isIncrementEnabled()) {
-                t.addLine(IKey.str(EnumChatFormatting.DARK_GRAY + "（货币量随连续天数递增）"));
+                t.addLine(IKey.str(EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.calendar.016")));
             }
         }
         // v1.7.29 物品奖励逐行列出明细
         addRewardItemLines(t, reward);
         if (editCallback != null && editCallback.isEditMode()) {
-            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "[编辑模式] 点击编辑此日奖励"));
+            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.017")));
         }
     }
 
@@ -511,17 +513,17 @@ public class SignInCalendarGui {
             }
             switch (result) {
                 case SignInClientData.RESULT_SUCCESS -> {
-                    String msg = EnumChatFormatting.GREEN + "签到成功！+" + SignInClientData.getLastResultReward() + " 猫猫币";
+                    String msg = EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.calendar.018") + SignInClientData.getLastResultReward() + VendingUiText.tr("gtit.ui.calendar.019");
                     if (SignInClientData.getLastResultTierDays() > 0) {
-                        msg += EnumChatFormatting.GOLD + "（达成 " + SignInClientData.getLastResultTierDays() + " 天阶梯宝箱！）";
+                        msg += EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.020") + SignInClientData.getLastResultTierDays() + VendingUiText.tr("gtit.ui.calendar.021");
                     }
                     return msg;
                 }
                 case SignInClientData.RESULT_ALREADY_SIGNED -> {
-                    return EnumChatFormatting.YELLOW + "今日已签到，明天再来吧";
+                    return EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.022");
                 }
                 default -> {
-                    return EnumChatFormatting.RED + "签到失败，请稍后重试";
+                    return EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.calendar.023");
                 }
             }
         })).pos(0, RESULT_Y)
@@ -548,26 +550,26 @@ public class SignInCalendarGui {
             .background(NekoGuiTextures.SIGNIN_BTN_CLAIM)
             .overlay(
                 IKey.dynamic(
-                    () -> SignInClientData.hasSignedToday() ? EnumChatFormatting.GRAY + "已签到"
-                        : EnumChatFormatting.WHITE + "签到"))
+                    () -> SignInClientData.hasSignedToday() ? EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.024")
+                        : EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.calendar.025")))
             .tooltipBuilder(t -> {
                 // 编辑模式：仅提示，不展示奖励预览
                 if (editCallback != null && editCallback.isEditMode()) {
-                    t.addLine(IKey.str(EnumChatFormatting.RED + "[编辑模式] 签到交互已禁用"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "点击日期格/阶梯槽或「全局配置」按钮进行编辑"));
+                    t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.calendar.026")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.027")));
                     return;
                 }
                 if (SignInClientData.hasSignedToday()) {
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "今日已完成签到，明天再来吧"));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.028")));
                 } else {
                     int nextConsec = SignInClientData.getConsecutiveDays() + 1;
                     String today = SignInClientData.getToday();
                     // v1.7.8 任务6：每日货币量预览走新口径（覆盖天不递增；默认奖励按开关递增）
                     int reward = SignInClientData.calculateDayCurrency(today, nextConsec);
-                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "点击签到，领取今日奖励"));
+                    t.addLine(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.calendar.029")));
                     if (reward > 0) {
                         t.addLine(
-                            IKey.str(EnumChatFormatting.GRAY + "每日奖励：" + reward + " 猫猫币（连续第 " + nextConsec + " 天）"));
+                            IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.030") + reward + VendingUiText.tr("gtit.ui.calendar.031") + nextConsec + VendingUiText.tr("gtit.ui.calendar.032")));
                     }
                     // 当日物品奖励预览（覆盖/默认奖励中的物品列表）
                     SignInReward dayReward = SignInClientData.getEffectiveDayReward(today);
@@ -576,14 +578,14 @@ public class SignInCalendarGui {
                     SignInRewardTier tier = SignInClientData.getTriggeredTier(nextConsec);
                     if (tier != null && !SignInClientData.hasClaimedTier(tier.getRequiredDays())) {
                         t.addLine(
-                            IKey.str(EnumChatFormatting.GOLD + "今天签到可额外领取连续 " + tier.getRequiredDays() + " 天阶梯宝箱！"));
+                            IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.033") + tier.getRequiredDays() + VendingUiText.tr("gtit.ui.calendar.034")));
                     }
                     // v1.7.8 任务5：累计阶梯触发提示（累计天数签到后 +1）
                     SignInRewardTier cumTier = SignInClientData
                         .getTriggeredCumulativeTier(SignInClientData.getTotalDays() + 1);
                     if (cumTier != null && !SignInClientData.hasClaimedCumulativeTier(cumTier.getRequiredDays())) {
                         t.addLine(
-                            IKey.str(EnumChatFormatting.GOLD + "今天签到可额外领取累计 " + cumTier.getRequiredDays() + " 天奖励！"));
+                            IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.035") + cumTier.getRequiredDays() + VendingUiText.tr("gtit.ui.calendar.036")));
                     }
                 }
             })
@@ -614,10 +616,10 @@ public class SignInCalendarGui {
         ButtonWidget<?> button = new ButtonWidget<>().pos((PAGE_WIDTH - BTN_W) / 2 + BTN_W + 6, BTN_Y)
             .size(46, BTN_H)
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
-            .overlay(IKey.str(EnumChatFormatting.YELLOW + "全局配置"))
+            .overlay(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.037")))
             .tooltipBuilder(t -> {
-                t.addLine(IKey.str(EnumChatFormatting.GOLD + "编辑每月签到全局配置"));
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "递增开关/系数与工作日/周末默认奖励"));
+                t.addLine(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.038")));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.039")));
             })
             .tooltipAutoUpdate(true)
             .onMouseTapped(mouse -> {
@@ -649,7 +651,7 @@ public class SignInCalendarGui {
         ParentWidget<?> view = new ParentWidget<>().size(PAGE_WIDTH, INNER_HEIGHT);
 
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + "连续签到奖励")).pos(0, 0)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.040"))).pos(0, 0)
                 .size(PAGE_WIDTH, 10)
                 .textAlign(Alignment.Center)
                 .shadow(false));
@@ -659,7 +661,7 @@ public class SignInCalendarGui {
 
         // ---- v1.7.8 任务5：累计签到区块（连续区块下方） ----
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + "累计签到奖励")).pos(0, CUM_TITLE_Y)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.041"))).pos(0, CUM_TITLE_Y)
                 .size(PAGE_WIDTH, 10)
                 .textAlign(Alignment.Center)
                 .shadow(false));
@@ -668,14 +670,14 @@ public class SignInCalendarGui {
 
         // 规则说明（静态；v1.7.6 G4 自 GRAY 调深为 0xFF555555，浅灰面板上 GRAY 过淡）
         view.child(
-            new TextWidget<>(IKey.str("连续/累计阶梯达成后，签到时自动发放")).pos(0, NOTE_Y)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.calendar.042"))).pos(0, NOTE_Y)
                 .size(PAGE_WIDTH, 9)
                 .textAlign(Alignment.Center)
                 .scale(0.75f)
                 .color(0xFF555555)
                 .shadow(false));
         view.child(
-            new TextWidget<>(IKey.str("连续阶梯每月重置，累计阶梯永久限领一次")).pos(0, NOTE_Y + 10)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.calendar.043"))).pos(0, NOTE_Y + 10)
                 .size(PAGE_WIDTH, 9)
                 .textAlign(Alignment.Center)
                 .scale(0.75f)
@@ -696,16 +698,16 @@ public class SignInCalendarGui {
             // 读客户端缓存（服务端同步快照优先）
             SignInRewardTier next = SignInClientData.getNextCumulativeTier(total);
             if (next == null) {
-                return EnumChatFormatting.GOLD + "累计签到 " + total + " 天 · 已达成全部累计奖励";
+                return EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.044") + total + VendingUiText.tr("gtit.ui.calendar.045");
             }
-            return "累计签到 " + total
-                + " 天 · 距 "
+            return VendingUiText.tr("gtit.ui.calendar.046") + total
+                + VendingUiText.tr("gtit.ui.calendar.047")
                 + next.getRequiredDays()
-                + " 天奖励还差 "
+                + VendingUiText.tr("gtit.ui.calendar.048")
                 + EnumChatFormatting.GOLD
                 + (next.getRequiredDays() - total)
                 + EnumChatFormatting.RESET
-                + " 天";
+                + VendingUiText.tr("gtit.ui.calendar.049");
         })).pos(0, CUM_LABEL_Y)
             .size(PAGE_WIDTH, 10)
             .textAlign(Alignment.Center)
@@ -725,18 +727,18 @@ public class SignInCalendarGui {
             // 读客户端缓存（服务端同步快照优先），不直接读本地配置
             SignInRewardTier next = SignInClientData.getNextTier(consecutive);
             if (next == null) {
-                return EnumChatFormatting.GOLD + "连续签到 " + consecutive + " 天 · 已达成全部阶梯奖励";
+                return EnumChatFormatting.GOLD + "连续签到 " + consecutive + VendingUiText.tr("gtit.ui.calendar.050");
             }
             // 主体不带格式码（走 widget color 深灰），仅差距天数内嵌 GOLD 高亮，§r 恢复主体色
             // （1.7.10 原版 §r→0x404040，与主体色 0xFF3F3F3F 一致；否则尾部「 天」会继承 GOLD）
             return "连续签到 " + consecutive
-                + " 天 · 距 "
+                + VendingUiText.tr("gtit.ui.calendar.051")
                 + next.getRequiredDays()
-                + " 天宝箱还差 "
+                + VendingUiText.tr("gtit.ui.calendar.052")
                 + EnumChatFormatting.GOLD
                 + (next.getRequiredDays() - consecutive)
                 + EnumChatFormatting.RESET
-                + " 天";
+                + VendingUiText.tr("gtit.ui.calendar.053");
         })).pos(0, PROGRESS_LABEL_Y)
             .size(PAGE_WIDTH, 10)
             .textAlign(Alignment.Center)
@@ -883,22 +885,22 @@ public class SignInCalendarGui {
         SignInRewardTier tier = tierAt(slotIndex, cumulative);
         if (tier == null) {
             if (editCallback != null && editCallback.isEditMode()) {
-                t.addLine(IKey.str(EnumChatFormatting.YELLOW + "[编辑模式] 点击新增" + (cumulative ? "累计" : "连续") + "阶梯"));
+                t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.054") + (cumulative ? VendingUiText.tr("gtit.ui.calendar.055") : VendingUiText.tr("gtit.ui.calendar.056")) + VendingUiText.tr("gtit.ui.calendar.057")));
             } else {
-                t.addLine(IKey.str(EnumChatFormatting.GRAY + "无阶梯奖励"));
+                t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.058")));
             }
             return;
         }
         t.addLine(
-            IKey.str(EnumChatFormatting.GOLD + (cumulative ? "累计签到 " : "连续签到 ") + tier.getRequiredDays() + " 天奖励"));
+            IKey.str(EnumChatFormatting.GOLD + (cumulative ? VendingUiText.tr("gtit.ui.calendar.059") : "连续签到 ") + tier.getRequiredDays() + VendingUiText.tr("gtit.ui.calendar.060")));
         // 奖励明细：货币一行 + 物品逐行（统一奖励模型）
         addRewardLines(t, tier.getReward());
         if (editCallback != null && editCallback.isEditMode()) {
-            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "[编辑模式] 点击编辑此阶梯奖励"));
+            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.061")));
         } else if (isTierClaimed(tier.getRequiredDays(), cumulative)) {
-            t.addLine(IKey.str(EnumChatFormatting.GREEN + (cumulative ? "已领取（永久限领一次）" : "本月已领取")));
+            t.addLine(IKey.str(EnumChatFormatting.GREEN + (cumulative ? VendingUiText.tr("gtit.ui.calendar.062") : VendingUiText.tr("gtit.ui.calendar.063"))));
         } else {
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "达成条件后签到自动发放"));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.064")));
         }
     }
 
@@ -973,7 +975,7 @@ public class SignInCalendarGui {
         ParentWidget<?> view = new ParentWidget<>().size(PAGE_WIDTH, INNER_HEIGHT);
 
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + "每日在线奖励")).pos(0, 0)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.065"))).pos(0, 0)
                 .size(PAGE_WIDTH, 10)
                 .textAlign(Alignment.Center)
                 .shadow(false));
@@ -982,7 +984,7 @@ public class SignInCalendarGui {
         view.child(
             new TextWidget<>(
                 IKey.dynamic(
-                    () -> EnumChatFormatting.AQUA + "今日已在线 "
+                    () -> EnumChatFormatting.AQUA + VendingUiText.tr("gtit.ui.calendar.066")
                         + formatDuration(SignInClientData.getOnlineSecondsToday()))).pos(0, ONLINE_STATUS_Y)
                             .size(PAGE_WIDTH, 10)
                             .textAlign(Alignment.Center)
@@ -995,7 +997,7 @@ public class SignInCalendarGui {
 
         // 规则说明（静态灰字）
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "在线时长每日零点重置，奖励每日可领一轮")).pos(0, INNER_HEIGHT - 12)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.067"))).pos(0, INNER_HEIGHT - 12)
                 .size(PAGE_WIDTH, 9)
                 .textAlign(Alignment.Center)
                 .scale(0.75f)
@@ -1025,7 +1027,7 @@ public class SignInCalendarGui {
         // 条件文本（在线 X 时间）
         row.child(new TextWidget<>(IKey.dynamic(() -> {
             OnlineTimeRewardTier tier = onlineTier(index);
-            return tier == null ? "" : "在线 " + formatDuration(tier.getRequiredSeconds());
+            return tier == null ? "" : VendingUiText.tr("gtit.ui.calendar.068") + formatDuration(tier.getRequiredSeconds());
         })).pos(34, 2)
             .size(80, 9)
             .scale(0.8f)
@@ -1106,18 +1108,18 @@ public class SignInCalendarGui {
     private static void buildOnlineTierTooltip(RichTooltip t, int index, SignInEditCallback editCallback) {
         OnlineTimeRewardTier tier = onlineTier(index);
         if (tier == null) return;
-        t.addLine(IKey.str(EnumChatFormatting.GOLD + "在线 " + formatDuration(tier.getRequiredSeconds()) + " 奖励"));
+        t.addLine(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.069") + formatDuration(tier.getRequiredSeconds()) + VendingUiText.tr("gtit.ui.calendar.070")));
         t.addLine(IKey.str(buildOnlineRewardText(tier)));
         if (editCallback != null && editCallback.isEditMode()) {
-            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "[编辑模式] 点击编辑此在线档位"));
+            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.071")));
             return;
         }
         if (SignInClientData.hasClaimedOnlineTier(tier.getRequiredSeconds())) {
-            t.addLine(IKey.str(EnumChatFormatting.GREEN + "今日已领取"));
+            t.addLine(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.calendar.072")));
         } else if (SignInClientData.getOnlineSecondsToday() >= tier.getRequiredSeconds()) {
-            t.addLine(IKey.str(EnumChatFormatting.YELLOW + "点击领取"));
+            t.addLine(IKey.str(EnumChatFormatting.YELLOW + VendingUiText.tr("gtit.ui.calendar.073")));
         } else {
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "尚未达成，继续在线即可解锁"));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.074")));
         }
     }
 
@@ -1125,7 +1127,7 @@ public class SignInCalendarGui {
     private static String buildOnlineRewardText(OnlineTimeRewardTier tier) {
         String text = "+" + tier.getCurrencyAmount() + " " + NekoCurrencyRegistrar.getDisplayName(tier.getCurrencyId());
         if (tier.hasItemReward()) {
-            text += " +物品";
+            text += VendingUiText.tr("gtit.ui.calendar.075");
         }
         return text;
     }
@@ -1135,12 +1137,12 @@ public class SignInCalendarGui {
         OnlineTimeRewardTier tier = onlineTier(index);
         if (tier == null) return "";
         if (SignInClientData.hasClaimedOnlineTier(tier.getRequiredSeconds())) {
-            return EnumChatFormatting.GRAY + "已领取";
+            return EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.076");
         }
         if (SignInClientData.getOnlineSecondsToday() >= tier.getRequiredSeconds()) {
-            return EnumChatFormatting.WHITE + "领取";
+            return EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.calendar.077");
         }
-        return EnumChatFormatting.DARK_GRAY + "未达成";
+        return EnumChatFormatting.DARK_GRAY + VendingUiText.tr("gtit.ui.calendar.078");
     }
 
     /** 按索引取在线档位（越界返回 null，供各行 setEnabledIf 折叠） */
@@ -1172,7 +1174,7 @@ public class SignInCalendarGui {
         ParentWidget<?> view = new ParentWidget<>().size(PAGE_WIDTH, INNER_HEIGHT);
 
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + "纪念日")).pos(0, 0)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.calendar.079"))).pos(0, 0)
                 .size(PAGE_WIDTH, 10)
                 .textAlign(Alignment.Center)
                 .shadow(false));
@@ -1180,9 +1182,9 @@ public class SignInCalendarGui {
         // 首次入服时间（只读，服务端首次登录自动记录）
         view.child(new TextWidget<>(IKey.dynamic(() -> {
             String firstJoin = SignInClientData.getFirstJoinDate();
-            return EnumChatFormatting.GRAY + "首次入服时间："
+            return EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.080")
                 + EnumChatFormatting.YELLOW
-                + (firstJoin.isEmpty() ? "未知" : firstJoin);
+                + (firstJoin.isEmpty() ? VendingUiText.tr("gtit.ui.calendar.081") : firstJoin);
         })).pos(0, 14)
             .size(PAGE_WIDTH, 10)
             .textAlign(Alignment.Center)
@@ -1194,7 +1196,7 @@ public class SignInCalendarGui {
 
         // 格式说明（静态灰字）
         view.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "日期格式 MM-dd（如 05-20），年份可选填")).pos(0, INNER_HEIGHT - 12)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.082"))).pos(0, INNER_HEIGHT - 12)
                 .size(PAGE_WIDTH, 9)
                 .textAlign(Alignment.Center)
                 .scale(0.75f)
@@ -1209,7 +1211,7 @@ public class SignInCalendarGui {
             .size(PAGE_WIDTH, FIELD_H + 2);
 
         row.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "我的生日:")).pos(4, 4)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.083"))).pos(4, 4)
                 .size(52, 9)
                 .scale(0.8f)
                 .shadow(false));
@@ -1220,8 +1222,8 @@ public class SignInCalendarGui {
         birthdayField.pos(56, 0)
             .size(44, FIELD_H);
         birthdayField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("生日（MM-dd 格式，如 05-20）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "用于生日祝福，保存后次年生效"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.calendar.084")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.085")));
         });
         birthdayField.tooltipAutoUpdate(true);
         row.child(birthdayField);
@@ -1230,8 +1232,8 @@ public class SignInCalendarGui {
             new ButtonWidget<>().pos(106, 0)
                 .size(40, FIELD_H)
                 .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
-                .overlay(IKey.str(EnumChatFormatting.WHITE + "保存"))
-                .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + "保存生日到服务器")))
+                .overlay(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.calendar.086")))
+                .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.087"))))
                 .tooltipAutoUpdate(true)
                 .onMouseTapped(mouse -> {
                     // 客户端预校验格式（服务端仍权威校验，双重防线）
@@ -1256,7 +1258,7 @@ public class SignInCalendarGui {
             .size(PAGE_WIDTH, ANNIV_ROW_Y - 48 + ANNIV_MAX_ROWS * ANNIV_ROW_H);
 
         list.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + "自定义纪念日（最多 " + ANNIV_MAX_ROWS + " 条）:")).pos(4, 0)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.088") + ANNIV_MAX_ROWS + VendingUiText.tr("gtit.ui.calendar.089"))).pos(4, 0)
                 .size(PAGE_WIDTH - 8, 9)
                 .scale(0.8f)
                 .shadow(false));
@@ -1284,7 +1286,7 @@ public class SignInCalendarGui {
                     .size(12, 12)
                     .background(NekoGuiTextures.MAIL_TRASH)
                     .disableHoverBackground()
-                    .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.RED + "删除该纪念日")))
+                    .tooltipBuilder(t -> t.addLine(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.calendar.090"))))
                     .tooltipAutoUpdate(true)
                     .onMouseTapped(mouse -> {
                         if (mouse == 0 && anniversaryAt(index) != null) {
@@ -1310,8 +1312,8 @@ public class SignInCalendarGui {
         nameField.pos(4, 0)
             .size(62, FIELD_H);
         nameField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("纪念日名称"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "最长 " + MAX_ANNIV_NAME_LENGTH + " 字符"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.calendar.091")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.092") + MAX_ANNIV_NAME_LENGTH + VendingUiText.tr("gtit.ui.calendar.093")));
         });
         nameField.tooltipAutoUpdate(true);
         row.child(nameField);
@@ -1322,7 +1324,7 @@ public class SignInCalendarGui {
             .setMaxLength(MAX_BIRTHDAY_LENGTH);
         dateField.pos(70, 0)
             .size(38, FIELD_H);
-        dateField.tooltipBuilder(t -> t.addLine(IKey.str("日期（MM-dd，如 05-20）")));
+        dateField.tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.calendar.094"))));
         dateField.tooltipAutoUpdate(true);
         row.child(dateField);
 
@@ -1333,8 +1335,8 @@ public class SignInCalendarGui {
         yearField.pos(112, 0)
             .size(30, FIELD_H);
         yearField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("年份（可选，如 2024）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "留空表示不记年份"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.calendar.095")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.096")));
         });
         yearField.tooltipAutoUpdate(true);
         row.child(yearField);
@@ -1346,8 +1348,8 @@ public class SignInCalendarGui {
                 .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
                 .overlay(IKey.str(EnumChatFormatting.GREEN + "+"))
                 .tooltipBuilder(t -> {
-                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "添加纪念日"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "名称必填，日期 MM-dd，年份可选"));
+                    t.addLine(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.calendar.097")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.098")));
                 })
                 .tooltipAutoUpdate(true)
                 .onMouseTapped(mouse -> {
@@ -1480,7 +1482,7 @@ public class SignInCalendarGui {
      * @return 紧凑文本（如 "+10 猫猫币 +物品×2"；空奖励返回 "无奖励"）
      */
     private static String buildRewardText(SignInReward reward) {
-        if (reward == null) return "无奖励";
+        if (reward == null) return VendingUiText.tr("gtit.ui.calendar.099");
         String text = "";
         if (reward.hasCurrency()) {
             text = "+" + reward.getCurrencyAmount()
@@ -1492,9 +1494,9 @@ public class SignInCalendarGui {
             if (item != null && !item.isEmpty()) itemCount++;
         }
         if (itemCount > 0) {
-            text += (text.isEmpty() ? "" : " ") + "+物品×" + itemCount;
+            text += (text.isEmpty() ? "" : " ") + VendingUiText.tr("gtit.ui.calendar.100") + itemCount;
         }
-        return text.isEmpty() ? "无奖励" : text;
+        return text.isEmpty() ? VendingUiText.tr("gtit.ui.calendar.101") : text;
     }
 
     /**
@@ -1507,7 +1509,7 @@ public class SignInCalendarGui {
      */
     private static void addRewardLines(RichTooltip t, SignInReward reward) {
         if (reward == null || (!reward.hasCurrency() && !reward.hasItems())) {
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "无奖励"));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.calendar.102")));
             return;
         }
         if (reward.hasCurrency()) {
@@ -1545,12 +1547,12 @@ public class SignInCalendarGui {
      * 整小时→「N 小时」；不足 1 小时→「M 分钟」；其余→「N 小时 M 分钟」。
      */
     private static String formatDuration(int seconds) {
-        if (seconds <= 0) return "0 分钟";
+        if (seconds <= 0) return VendingUiText.tr("gtit.ui.calendar.103");
         int hours = seconds / 3600;
         int minutes = seconds % 3600 / 60;
-        if (hours <= 0) return minutes + " 分钟";
-        if (minutes == 0) return hours + " 小时";
-        return hours + " 小时 " + minutes + " 分钟";
+        if (hours <= 0) return minutes + VendingUiText.tr("gtit.ui.calendar.104");
+        if (minutes == 0) return hours + VendingUiText.tr("gtit.ui.calendar.105");
+        return hours + VendingUiText.tr("gtit.ui.calendar.106") + minutes + VendingUiText.tr("gtit.ui.calendar.107");
     }
 
     // ==================== 当月信息 ====================
