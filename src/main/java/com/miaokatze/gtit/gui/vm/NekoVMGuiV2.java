@@ -672,7 +672,7 @@ public class NekoVMGuiV2 extends MTEMultiBlockBaseGui<MTENekoVendingMachineV2>
                     if (multiblock == null) return;
                     boolean ok = multiblock.retrieveEarliestMeTransferItem();
                     if (ok) {
-                        tradeResultMessage = "已取回 ME 传输队列中的物品";
+                        tradeResultMessage = VendingUiText.tr("gtit.ui.main.001");
                         if (tradeResultSync != null) {
                             tradeResultSync.setValue(tradeResultMessage);
                         }
@@ -1665,13 +1665,13 @@ public class NekoVMGuiV2 extends MTEMultiBlockBaseGui<MTENekoVendingMachineV2>
         if (isClient()) return;
         try {
             if (playerId == null) {
-                tradeResultMessage = "无法确定玩家身份";
+                tradeResultMessage = VendingUiText.tr("gtit.ui.main.002");
                 return;
             }
 
             String[] parts = request.split(":");
             if (parts.length != 2) {
-                tradeResultMessage = "交易请求格式错误";
+                tradeResultMessage = VendingUiText.tr("gtit.ui.main.003");
                 return;
             }
 
@@ -1681,7 +1681,7 @@ public class NekoVMGuiV2 extends MTEMultiBlockBaseGui<MTENekoVendingMachineV2>
                 groupId = UUID.fromString(parts[0]);
                 tradeIndex = Integer.parseInt(parts[1]);
             } catch (Exception e) {
-                tradeResultMessage = "交易请求参数解析失败";
+                tradeResultMessage = VendingUiText.tr("gtit.ui.main.004");
                 return;
             }
 
@@ -1690,7 +1690,7 @@ public class NekoVMGuiV2 extends MTEMultiBlockBaseGui<MTENekoVendingMachineV2>
             if (result.isSuccess()) {
                 // v1.7.10：猫猫币产物恢复落入输出槽（1.6.* 观感），不再直入钱包，
                 // 产物经掉落动画可见，原 v1.7.8 A1 钱包入账提示不再需要
-                tradeResultMessage = EnumChatFormatting.GREEN + "交易成功!";
+                tradeResultMessage = EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.main.005");
                 coinOps.playTradeSuccessSound();
                 // v1.7.12：移除此处的 forceSyncOutputSlots——交易成功时物品尚未落槽（仍在 outputBuffer），
                 // 同步空槽无意义。物品落槽依赖 ModularContainer.detectAndSendChanges 原生同步
@@ -1714,7 +1714,7 @@ public class NekoVMGuiV2 extends MTEMultiBlockBaseGui<MTENekoVendingMachineV2>
             }
         } catch (Throwable t) {
             LOG.error("[NekoVMV2] processTradeRequest 异常!", t);
-            tradeResultMessage = "交易处理异常";
+            tradeResultMessage = VendingUiText.tr("gtit.ui.main.006");
             if (tradeResultSync != null) {
                 tradeResultSync.notifyUpdate();
             }
@@ -1763,25 +1763,25 @@ public class NekoVMGuiV2 extends MTEMultiBlockBaseGui<MTENekoVendingMachineV2>
     private String getTradeResultMessage(NekoTradeResult result) {
         switch (result.getStatus()) {
             case SUCCESS:
-                return "交易成功";
+                return VendingUiText.tr("gtit.ui.main.007");
             case TRADE_GROUP_NOT_FOUND:
-                return "交易组不存在";
+                return VendingUiText.tr("gtit.ui.main.008");
             case TRADE_INDEX_OUT_OF_BOUNDS:
-                return "交易索引越界";
+                return VendingUiText.tr("gtit.ui.main.009");
             case ON_COOLDOWN:
-                return "冷却中，请稍后再试";
+                return VendingUiText.tr("gtit.ui.main.010");
             case MAX_TRADES_REACHED:
-                return "已达到最大交易次数";
+                return VendingUiText.tr("gtit.ui.main.011");
             case CONDITION_NOT_SATISFIED:
-                return "前置条件未满足";
+                return VendingUiText.tr("gtit.ui.main.012");
             case INSUFFICIENT_CURRENCY:
-                return "猫猫币不足";
+                return VendingUiText.tr("gtit.ui.main.013");
             case INSUFFICIENT_ITEMS:
-                return "输入物品不足";
+                return VendingUiText.tr("gtit.ui.main.014");
             case OUTPUT_FULL:
-                return "输出总线已满";
+                return VendingUiText.tr("gtit.ui.main.015");
             default:
-                return result.getMessage() != null ? result.getMessage() : "交易失败";
+                return result.getMessage() != null ? result.getMessage() : VendingUiText.tr("gtit.ui.main.016");
         }
     }
 }
