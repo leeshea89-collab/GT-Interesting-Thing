@@ -506,8 +506,8 @@ public final class StatusCodec {
 
         // 动态标签页：使用 NekoPageRegistry 中的配置名称
         String pageName = NekoPageRegistry.getPageName(category.getTabId());
-        if (pageName != null && !pageName.isEmpty() && !VendingUiText.tr("gtit.ui.status.004").equals(pageName)) {
-            return pageName;
+        if (pageName != null && !pageName.isEmpty() && !"未知".equals(pageName)) {
+            return VendingUiText.displayPageName(pageName);
         }
         return category.getKey();
     }
