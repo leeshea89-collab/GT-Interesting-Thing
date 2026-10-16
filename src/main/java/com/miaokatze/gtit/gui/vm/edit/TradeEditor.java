@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -194,13 +196,13 @@ public final class TradeEditor {
 
         // 标题（新建 / 编辑动态切换，v1.7.6 G3④）
         editPanel.child(
-            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + (editTradeIsNew ? "新建交易" : "编辑交易"))).top(5)
+            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + (editTradeIsNew ? VendingUiText.tr("gtit.ui.tradeeditor.001") : VendingUiText.tr("gtit.ui.tradeeditor.002")))).top(5)
                 .horizontalCenter());
 
         // --- 需求物品区（slot 0-15，两行×8；v1.7.6 G3①）---
         // 货币解绑提示：需求格放猫猫币物品 = 货币需求（购买时扣钱包）
         editPanel.child(
-            IKey.str(EnumChatFormatting.WHITE + "需求:")
+            IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.tradeeditor.003"))
                 .asWidget()
                 .left(8)
                 .top(20));
@@ -215,7 +217,7 @@ public final class TradeEditor {
         // --- 产物物品区（slot 16-31，两行×8；v1.7.6 G3①）---
         // 货币解绑提示：产物格放猫猫币物品 = 货币产出（购买后入钱包）
         editPanel.child(
-            IKey.str(EnumChatFormatting.WHITE + "产物:")
+            IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.tradeeditor.004"))
                 .asWidget()
                 .left(8)
                 .top(62));
@@ -236,7 +238,7 @@ public final class TradeEditor {
 
         // 冷却时间
         editPanel.child(
-            IKey.str(EnumChatFormatting.WHITE + "冷却(秒):")
+            IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.tradeeditor.005"))
                 .asWidget()
                 .left(8)
                 .top(fieldY + 2));
@@ -253,7 +255,7 @@ public final class TradeEditor {
         // BQ 绑定 ID
         fieldY += spacing;
         editPanel.child(
-            IKey.str(EnumChatFormatting.WHITE + "BQ绑定ID:")
+            IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.tradeeditor.006"))
                 .asWidget()
                 .left(8)
                 .top(fieldY + 2));
@@ -267,7 +269,7 @@ public final class TradeEditor {
         // 严格匹配 NBT（v1.7.6 G3⑤，点击切换；统一默认不勾=仅按物品匹配）
         fieldY += spacing;
         editPanel.child(
-            IKey.str(EnumChatFormatting.WHITE + "严格匹配NBT:")
+            IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.tradeeditor.007"))
                 .asWidget()
                 .left(8)
                 .top(fieldY + 2));
@@ -276,15 +278,15 @@ public final class TradeEditor {
             .size(fieldWidth, fieldHeight)
             .background(NekoGuiTextures.TEXT_FIELD_BACKGROUND)
             .overlay(
-                IKey.dynamic(() -> editRecordNBT ? EnumChatFormatting.GREEN + "启用" : EnumChatFormatting.RED + "停用"))
+                IKey.dynamic(() -> editRecordNBT ? EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.tradeeditor.008") : EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.tradeeditor.009")))
             .onMouseTapped(mouse -> {
                 editRecordNBT = !editRecordNBT;
                 return true;
             });
         recordNbtToggle.tooltipBuilder(t -> {
-            t.addLine(IKey.str("点击切换需求物品的 NBT 匹配严格度"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "启用：需求物品按物品+NBT 精确匹配"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "停用：仅按物品匹配（忽略 NBT 差异）"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradeeditor.010")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradeeditor.011")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.tradeeditor.012")));
         });
         recordNbtToggle.tooltipAutoUpdate(true);
         editPanel.child(recordNbtToggle);
@@ -295,15 +297,15 @@ public final class TradeEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(30)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.tradeeditor.013")))
                 .onMouseTapped(mouse -> {
                     if (isEditingDefaultTrade() && defaultSaveConfirmDialog != null
                         && defaultSaveConfirmPanel != null) {
                         // v1.8.20 ID 隔离：修改默认条目 = 原位覆盖（MIAO 语义 ID 保持），提示明确"这是默认任务"——
                         // 下次默认贸易组更新时启动会自动覆盖回新版
-                        defaultSaveConfirmDialog.setButtonText("仍要保存", "取消");
+                        defaultSaveConfirmDialog.setButtonText(VendingUiText.tr("gtit.ui.tradeeditor.014"), VendingUiText.tr("gtit.ui.tradeeditor.015"));
                         defaultSaveConfirmDialog.setParams(
-                            "这是默认任务（系统内置条目）：修改将原位覆盖默认条目本身，下次默认贸易组更新时会自动覆盖回新版。仍要保存吗？",
+                            VendingUiText.tr("gtit.ui.tradeeditor.016"),
                             () -> { if (saveTradeEdit()) requestClose.run(); });
                         defaultSaveConfirmPanel.openPanel();
                     } else {
@@ -318,16 +320,16 @@ public final class TradeEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(100)
                 .bottom(8)
-                .overlay(IKey.str("删除"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.tradeeditor.017")))
                 .setEnabledIf(w -> !editTradeIsNew)
-                .tooltipBuilder(t -> t.addLine(IKey.str("删除该交易条目（不可恢复）")))
+                .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.tradeeditor.018"))))
                 .onMouseTapped(mouse -> {
                     if (deleteConfirmDialog == null || deleteConfirmPanel == null || editingDisplay == null)
                         return true;
-                    deleteConfirmDialog.setButtonText("是", "否");
+                    deleteConfirmDialog.setButtonText(VendingUiText.tr("gtit.ui.tradeeditor.019"), VendingUiText.tr("gtit.ui.tradeeditor.020"));
                     // v1.8.20：默认条目删除提示明确"更新时会自动恢复"（启动自动覆盖按 MIAO 语义 ID 重新注入）
                     deleteConfirmDialog
-                        .setParams(isEditingDefaultTrade() ? "这是默认任务（系统内置条目）：删除后下次默认贸易组更新时会自动恢复。" : "是否确认删除该条目", () -> {
+                        .setParams(isEditingDefaultTrade() ? VendingUiText.tr("gtit.ui.tradeeditor.021") : VendingUiText.tr("gtit.ui.tradeeditor.022"), () -> {
                             sendDeleteTrade(
                                 editingDisplay.getGroupId()
                                     .toString());
@@ -340,7 +342,7 @@ public final class TradeEditor {
             new ButtonWidget<>().size(50, 16)
                 .right(30)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.tradeeditor.023")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
@@ -447,7 +449,7 @@ public final class TradeEditor {
         if (!editTradeIsNew && editingDisplay == null) return false;
         if (oversizedChoices) {
             net.minecraft.client.Minecraft.getMinecraft().thePlayer
-                .addChatMessage(new net.minecraft.util.ChatComponentText("§c原交易超过单侧 16 格，请使用 JSON 编辑，GUI 拒绝截断保存"));
+                .addChatMessage(new net.minecraft.util.ChatComponentText(VendingUiText.tr("gtit.ui.tradeeditor.024")));
             return false;
         }
 
@@ -494,7 +496,7 @@ public final class TradeEditor {
                     if (mc.thePlayer != null) {
                         mc.thePlayer.addChatMessage(
                             new net.minecraft.util.ChatComponentText(
-                                net.minecraft.util.EnumChatFormatting.RED + "[编辑模式] 保存失败：交易必须至少包含一个产出"));
+                                net.minecraft.util.EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.tradeeditor.025")));
                     }
                 } catch (Exception ignored) {
                     // 客户端环境异常时不阻塞
@@ -507,7 +509,7 @@ public final class TradeEditor {
             if (payload.length() > limit) {
                 net.minecraft.client.Minecraft.getMinecraft().thePlayer.addChatMessage(
                     new net.minecraft.util.ChatComponentText(
-                        "§c保存失败：交易数据共 " + payload.length() + " 字符，超过 " + limit + " 字符上限；请减少候选或物品 NBT，草稿已保留"));
+                        VendingUiText.tr("gtit.ui.tradeeditor.026") + payload.length() + VendingUiText.tr("gtit.ui.tradeeditor.027") + limit + VendingUiText.tr("gtit.ui.tradeeditor.028")));
                 return false;
             }
 
@@ -579,7 +581,7 @@ public final class TradeEditor {
                 choices[index].getAlternatives()
                     .add(next);
             else net.minecraft.client.Minecraft.getMinecraft().thePlayer
-                .addChatMessage(new net.minecraft.util.ChatComponentText("§c每格最多 16 个候选，请先右键移除选项"));
+                .addChatMessage(new net.minecraft.util.ChatComponentText(VendingUiText.tr("gtit.ui.tradeeditor.029")));
         } else choices[index] = next;
     }
 
@@ -609,7 +611,7 @@ public final class TradeEditor {
         ore = ore.trim();
         if (amount <= 0 || (!ore.isEmpty() && net.minecraftforge.oredict.OreDictionary.getOres(ore)
             .isEmpty())) {
-            throw new IllegalArgumentException("矿词必须至少包含一种物品，数量必须为正数");
+            throw new IllegalArgumentException(VendingUiText.tr("gtit.ui.tradeeditor.030"));
         }
         NekoBigItemStack root = choices[index];
         NekoBigItemStack target = root;
