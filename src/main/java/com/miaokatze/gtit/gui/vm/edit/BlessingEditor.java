@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -68,7 +70,7 @@ public final class BlessingEditor {
     /** 祝福编辑：当前目标标识（"birthday" / "festival:<index>"） */
     private String editBlessingTarget = "birthday";
     /** 祝福编辑：发件人显示名（面板内随任意保存一并提交） */
-    private String editBlessingSender = "猫猫售货机";
+    private String editBlessingSender = VendingUiText.tr("gtit.ui.blessing.001");
     /** 祝福编辑：节日名称（仅节日目标） */
     private String editBlessingName = "";
     /** 祝福编辑：触发日期 "MM-dd"（仅节日目标） */
@@ -175,9 +177,9 @@ public final class BlessingEditor {
 
     private String blessingTargetDisplayName() {
         if (editBlessingTarget != null && editBlessingTarget.startsWith("festival:")) {
-            return "节日：" + editBlessingName + "（" + editBlessingMonthDay + "）";
+            return VendingUiText.tr("gtit.ui.blessing.002") + editBlessingName + "（" + editBlessingMonthDay + "）";
         }
-        return "生日模板";
+        return VendingUiText.tr("gtit.ui.blessing.003");
     }
 
     public NekoDraggableEditPanel buildEditPanel() {
@@ -193,7 +195,7 @@ public final class BlessingEditor {
 
         // 标题（随目标切换）
         editPanel.child(
-            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + "编辑祝福预设 - " + blessingTargetDisplayName()))
+            new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.blessing.004") + blessingTargetDisplayName()))
                 .top(5)
                 .horizontalCenter());
 
@@ -204,8 +206,8 @@ public final class BlessingEditor {
                 .top(16)
                 .overlay(IKey.str("<"))
                 .tooltipBuilder(t -> {
-                    t.addLine(IKey.str("上一个预设"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "切换前请先保存当前修改"));
+                    t.addLine(IKey.str(VendingUiText.tr("gtit.ui.blessing.005")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.blessing.006")));
                 })
                 .tooltipAutoUpdate(true)
                 .onMouseTapped(mouse -> {
@@ -228,8 +230,8 @@ public final class BlessingEditor {
                 .top(16)
                 .overlay(IKey.str(">"))
                 .tooltipBuilder(t -> {
-                    t.addLine(IKey.str("下一个预设"));
-                    t.addLine(IKey.str(EnumChatFormatting.GRAY + "切换前请先保存当前修改"));
+                    t.addLine(IKey.str(VendingUiText.tr("gtit.ui.blessing.007")));
+                    t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.blessing.008")));
                 })
                 .tooltipAutoUpdate(true)
                 .onMouseTapped(mouse -> {
@@ -248,7 +250,7 @@ public final class BlessingEditor {
 
         // ---- 发件人（全目标共用，随保存一并提交）----
         editPanel.child(
-            new TextWidget<>(IKey.str("发件人:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.009"))).left(8)
                 .top(fieldY + 2));
         TextFieldWidget senderField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> editBlessingSender, val -> editBlessingSender = val))
@@ -260,7 +262,7 @@ public final class BlessingEditor {
 
         // ---- 节日名称（仅节日目标可见）----
         fieldY += spacing;
-        TextWidget<?> nameLabel = new TextWidget<>(IKey.str("节日名称:"));
+        TextWidget<?> nameLabel = new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.010")));
         nameLabel.left(8)
             .top(fieldY + 2);
         nameLabel.setEnabledIf(w -> editBlessingTarget != null && editBlessingTarget.startsWith("festival:"));
@@ -276,7 +278,7 @@ public final class BlessingEditor {
 
         // ---- 触发日期 MM-dd（仅节日目标可见）----
         fieldY += spacing;
-        TextWidget<?> dateLabel = new TextWidget<>(IKey.str("触发日期:"));
+        TextWidget<?> dateLabel = new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.011")));
         dateLabel.left(8)
             .top(fieldY + 2);
         dateLabel.setEnabledIf(w -> editBlessingTarget != null && editBlessingTarget.startsWith("festival:"));
@@ -288,8 +290,8 @@ public final class BlessingEditor {
             .top(fieldY)
             .size(fieldWidth, fieldHeight);
         dateField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("固定公历日期，格式 MM-dd（如 01-01）"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "农历节日请按当年农历自行换算"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.blessing.012")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.blessing.013")));
         });
         dateField.tooltipAutoUpdate(true);
         dateField.setEnabledIf(w -> editBlessingTarget != null && editBlessingTarget.startsWith("festival:"));
@@ -298,7 +300,7 @@ public final class BlessingEditor {
         // ---- 邮件标题 ----
         fieldY += spacing;
         editPanel.child(
-            new TextWidget<>(IKey.str("邮件标题:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.014"))).left(8)
                 .top(fieldY + 2));
         TextFieldWidget titleField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> editBlessingTitle, val -> editBlessingTitle = val))
@@ -311,7 +313,7 @@ public final class BlessingEditor {
         // ---- 邮件正文 ----
         fieldY += spacing;
         editPanel.child(
-            new TextWidget<>(IKey.str("邮件正文:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.015"))).left(8)
                 .top(fieldY + 2));
         TextFieldWidget contentField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> editBlessingContent, val -> editBlessingContent = val))
@@ -324,7 +326,7 @@ public final class BlessingEditor {
         // ---- 猫猫币类型/数量 ----
         fieldY += spacing;
         editPanel.child(
-            new TextWidget<>(IKey.str("猫猫币:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.016"))).left(8)
                 .top(fieldY + 2));
         TextFieldWidget currencyField = new TextFieldWidget()
             .value(new StringValue.Dynamic(() -> editBlessingCurrency, val -> editBlessingCurrency = val))
@@ -333,8 +335,8 @@ public final class BlessingEditor {
             .top(fieldY)
             .size(86, fieldHeight);
         currencyField.tooltipBuilder(t -> {
-            t.addLine(IKey.str("货币 ID：neko / shimmeringNeko"));
-            t.addLine(IKey.str(EnumChatFormatting.GRAY + "留空 = 无猫猫币附件"));
+            t.addLine(IKey.str(VendingUiText.tr("gtit.ui.blessing.017")));
+            t.addLine(IKey.str(EnumChatFormatting.GRAY + VendingUiText.tr("gtit.ui.blessing.018")));
         });
         currencyField.tooltipAutoUpdate(true);
         // v1.7.19：TextFieldWidget 延迟到 PhantomItemSlot 之后添加（z-index 置顶）
@@ -348,14 +350,14 @@ public final class BlessingEditor {
         currencyAmountField.left(labelWidth + 90)
             .top(fieldY)
             .size(48, fieldHeight);
-        currencyAmountField.tooltipBuilder(t -> t.addLine(IKey.str("数量（作为附件物品发放）")));
+        currencyAmountField.tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.blessing.019"))));
         currencyAmountField.tooltipAutoUpdate(true);
         // v1.7.19：TextFieldWidget 延迟到 PhantomItemSlot 之后添加（z-index 置顶）
 
         // ---- 附件物品槽（PhantomItemSlot 拖入配置；留空 = 无物品附件）----
         fieldY += spacing + 2;
         editPanel.child(
-            new TextWidget<>(IKey.str("附件物品:")).left(8)
+            new TextWidget<>(IKey.str(VendingUiText.tr("gtit.ui.blessing.020"))).left(8)
                 .top(fieldY + 2));
         for (int i = 0; i < BLESSING_ITEM_SLOTS; i++) {
             PhantomItemSlot slot = new PhantomItemSlot().slot(new ModularSlot(editBlessingItemHandler, i));
@@ -378,7 +380,7 @@ public final class BlessingEditor {
             new ButtonWidget<>().size(50, 16)
                 .left(40)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.blessing.021")))
                 .onMouseTapped(mouse -> {
                     saveBlessingEdit();
                     requestClose.run();
@@ -388,7 +390,7 @@ public final class BlessingEditor {
             new ButtonWidget<>().size(50, 16)
                 .right(40)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.blessing.022")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
