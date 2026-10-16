@@ -1,5 +1,7 @@
 package com.miaokatze.gtit.gui.vm.edit;
 
+
+import com.miaokatze.gtit.gui.vm.VendingUiText;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -134,7 +136,7 @@ public final class OnlineTierEditor {
 
         // 标题
         editPanel.child(
-            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + "编辑在线档位")).top(5)
+            new TextWidget<>(IKey.str(EnumChatFormatting.GOLD + VendingUiText.tr("gtit.ui.onlinetier.001"))).top(5)
                 .horizontalCenter());
 
         int fieldY = 24;
@@ -144,7 +146,7 @@ public final class OnlineTierEditor {
         int spacing = 18;
 
         // 所需秒数
-        TextWidget<?> secondsLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "所需秒数:"));
+        TextWidget<?> secondsLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.onlinetier.002")));
         secondsLabel.left(8)
             .top(fieldY + 2);
         editPanel.child(secondsLabel);
@@ -163,7 +165,7 @@ public final class OnlineTierEditor {
 
         // 货币类型
         fieldY += spacing;
-        TextWidget<?> currencyLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币类型:"));
+        TextWidget<?> currencyLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.onlinetier.003")));
         currencyLabel.left(8)
             .top(fieldY + 2);
         editPanel.child(currencyLabel);
@@ -178,7 +180,7 @@ public final class OnlineTierEditor {
 
         // 货币数量
         fieldY += spacing;
-        TextWidget<?> amountLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "货币数量:"));
+        TextWidget<?> amountLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.onlinetier.004")));
         amountLabel.left(8)
             .top(fieldY + 2);
         editPanel.child(amountLabel);
@@ -197,7 +199,7 @@ public final class OnlineTierEditor {
 
         // 物品奖励槽（PhantomItemSlot 拖入配置；留空 = 无物品奖励）
         fieldY += spacing;
-        TextWidget<?> itemLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + "物品奖励:"));
+        TextWidget<?> itemLabel = new TextWidget<>(IKey.str(EnumChatFormatting.WHITE + VendingUiText.tr("gtit.ui.onlinetier.005")));
         itemLabel.left(8)
             .top(fieldY + 2);
         editPanel.child(itemLabel);
@@ -217,7 +219,7 @@ public final class OnlineTierEditor {
             new ButtonWidget<>().size(40, 16)
                 .left(14)
                 .bottom(8)
-                .overlay(IKey.str("保存"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.onlinetier.006")))
                 .onMouseTapped(mouse -> {
                     saveOnlineTierEdit("update");
                     requestClose.run();
@@ -227,7 +229,7 @@ public final class OnlineTierEditor {
             new ButtonWidget<>().size(40, 16)
                 .left(62)
                 .bottom(8)
-                .overlay(IKey.str(EnumChatFormatting.RED + "删除"))
+                .overlay(IKey.str(EnumChatFormatting.RED + VendingUiText.tr("gtit.ui.onlinetier.007")))
                 .onMouseTapped(mouse -> {
                     saveOnlineTierEdit("remove");
                     requestClose.run();
@@ -237,7 +239,7 @@ public final class OnlineTierEditor {
             new ButtonWidget<>().size(40, 16)
                 .left(110)
                 .bottom(8)
-                .overlay(IKey.str("取消"))
+                .overlay(IKey.str(VendingUiText.tr("gtit.ui.onlinetier.008")))
                 .onMouseTapped(mouse -> {
                     requestClose.run();
                     return true;
@@ -246,7 +248,7 @@ public final class OnlineTierEditor {
             new ButtonWidget<>().size(40, 16)
                 .left(158)
                 .bottom(8)
-                .overlay(IKey.str(EnumChatFormatting.GREEN + "新增"))
+                .overlay(IKey.str(EnumChatFormatting.GREEN + VendingUiText.tr("gtit.ui.onlinetier.009")))
                 .onMouseTapped(mouse -> {
                     saveOnlineTierEdit("add");
                     requestClose.run();
