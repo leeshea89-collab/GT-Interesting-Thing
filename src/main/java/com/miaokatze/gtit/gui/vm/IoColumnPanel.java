@@ -202,7 +202,7 @@ public final class IoColumnPanel {
                     .setValue(true);
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.str("弹出物品")));
+            .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.io.001"))));
         ButtonWidget<?> ejectCoinsButton = new ButtonWidget<>().size(16, 16)
             .overlay(
                 NekoGuiTextures.EJECT_COINS.asIcon()
@@ -212,7 +212,7 @@ public final class IoColumnPanel {
                     .setValue(true);
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.str("弹出所有猫猫币")));
+            .tooltipBuilder(t -> t.addLine(IKey.str(VendingUiText.tr("gtit.ui.io.002"))));
         ioColumn.child(
             Flow.row()
                 .child(ejectItemsButton.right(6))
