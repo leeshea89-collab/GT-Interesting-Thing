@@ -495,18 +495,18 @@ public final class StatusCodec {
      */
     public static String getCategoryName(NekoTradeCategory category) {
         if (category == null) {
-            return "未知";
+            return VendingUiText.tr("gtit.ui.status.001");
         }
         if (category.isFavourites()) {
-            return "收藏";
+            return VendingUiText.tr("gtit.ui.status.002");
         }
         if (category.isUnknown()) {
-            return "未知";
+            return VendingUiText.tr("gtit.ui.status.003");
         }
 
         // 动态标签页：使用 NekoPageRegistry 中的配置名称
         String pageName = NekoPageRegistry.getPageName(category.getTabId());
-        if (pageName != null && !pageName.isEmpty() && !"未知".equals(pageName)) {
+        if (pageName != null && !pageName.isEmpty() && !VendingUiText.tr("gtit.ui.status.004").equals(pageName)) {
             return pageName;
         }
         return category.getKey();
