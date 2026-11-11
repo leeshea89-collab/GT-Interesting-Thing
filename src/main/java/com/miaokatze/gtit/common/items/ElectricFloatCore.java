@@ -26,13 +26,31 @@ import ic2.api.item.IElectricItem;
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ElectricFloatCore extends Item implements IBauble, IElectricItem {
 
-    private static final long MAX_CHARGE = 32000000L;
-    private static final int TIER = 1; // LV
     private static final long COST_PER_TICK = 128L;
 
+    private final String tooltipBase;
+    private final double maxCharge;
+    private final int tier;
+    private final double transferLimit;
+
+    /** LV 版：32M EU，32 EU/t 充电。 */
     public ElectricFloatCore() {
+        this("electric_float_core", 32_000_000L, 1, 32L);
+    }
+
+    /**
+     * @param name          注册/本地化名（同时作为 tooltip 键前缀）
+     * @param maxCharge     电容量 (EU)
+     * @param tier          IC2 电压等级（1 LV … 4 EV）
+     * @param transferLimit 每 tick 最大充电量 (EU/t)
+     */
+    protected ElectricFloatCore(String name, long maxCharge, int tier, long transferLimit) {
         super();
-        setUnlocalizedName("electric_float_core");
+        this.tooltipBase = "item." + name + ".tooltip.";
+        this.maxCharge = maxCharge;
+        this.tier = tier;
+        this.transferLimit = transferLimit;
+        setUnlocalizedName(name);
         setTextureName("gtit:electric_float_core");
         setCreativeTab(CreativeTabManager.CREATIVE_TAB);
         setMaxStackSize(1);
@@ -128,7 +146,7 @@ public class ElectricFloatCore extends Item implements IBauble, IElectricItem {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean showAdvanced) {
         for (int i = 0;; i++) {
-            String key = "item.electric_float_core.tooltip." + i;
+            String key = tooltipBase + i;
             String line = StatCollector.translateToLocal(key);
             if (line.equals(key)) break;
             tooltip.add(EnumChatFormatting.GOLD + line);
@@ -145,17 +163,17 @@ public class ElectricFloatCore extends Item implements IBauble, IElectricItem {
 
     @Override
     public double getMaxCharge(ItemStack aStack) {
-        return MAX_CHARGE;
+        return maxCharge;
     }
 
     @Override
     public int getTier(ItemStack aStack) {
-        return TIER;
+        return tier;
     }
 
     @Override
     public double getTransferLimit(ItemStack aStack) {
-        return 32L; // LV limit
+        return transferLimit;
     }
 
     @Override

@@ -24,6 +24,8 @@ public enum GTITItemList implements IItemContainer {
     FloatCore,
     // 电力浮空核心
     ElectricFloatCore,
+    // 电力浮空核心 EV 版（LV 版可在手持 2x2 合成中换取）
+    ElectricFloatCoreEV,
     // 念力共振探矿核心
     TelekinesisOreScannerCore,
 

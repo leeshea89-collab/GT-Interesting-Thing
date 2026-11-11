@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.miaokatze.gtit.common.items.ElectricFloatCore;
+import com.miaokatze.gtit.common.items.ElectricFloatCoreEV;
 import com.miaokatze.gtit.common.items.FloatCore;
 import com.miaokatze.gtit.common.items.NekoCoin;
 import com.miaokatze.gtit.common.items.ReincarnationCrystal;
@@ -96,6 +97,7 @@ public class ItemRegistrar {
 
     private static void registerElectricFloatCore() {
         ElectricFloatCore.setAndRegister(ElectricFloatCore::new);
+        ElectricFloatCoreEV.setAndRegister(ElectricFloatCoreEV::new);
     }
 
     private static void registerTelekinesisOreScannerCore() {

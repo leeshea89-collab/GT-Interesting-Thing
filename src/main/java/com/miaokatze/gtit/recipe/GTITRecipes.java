@@ -21,6 +21,7 @@ public class GTITRecipes {
     public static void init() {
         addFloatCoreRecipe();
         addElectricFloatCoreRecipe();
+        FloatCoreUpgradeRecipe.register();
         addTelekinesisOreScannerCoreRecipe();
         addRingWindriderRecipe();
         addNekoVendingMachineRecipe();

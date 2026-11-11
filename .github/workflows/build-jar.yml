@@ -1,0 +1,43 @@
+name: Build jar
+
+on:
+  push:
+    branches: [ev-float-core, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: |
+            8
+            17
+      - name: Read the version
+        run: echo "VERSION=$(grep -E '^RELEASE_VERSION' gradle.properties | cut -d= -f2 | tr -d ' ')" >> "$GITHUB_ENV"
+      - name: Build
+        run: chmod +x gradlew && ./gradlew --no-daemon assemble
+      - name: Pick the jar
+        run: |
+          JAR=$(ls build/libs/*.jar | grep -v -E -- '-(dev|sources|api|preshadow)\.jar$' | head -1)
+          cp "$JAR" "GTInterestingThing-${VERSION}.jar"
+          ls -la build/libs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GTInterestingThing-${{ env.VERSION }}
+          path: GTInterestingThing-${{ env.VERSION }}.jar
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: gtit-v${{ env.VERSION }}
+          name: GTInterestingThing ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          prerelease: true
+          files: GTInterestingThing-${{ env.VERSION }}.jar
