@@ -18,16 +18,15 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: |
-            8
-            17
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
       - name: Read the version
         run: echo "VERSION=$(grep -E '^RELEASE_VERSION' gradle.properties | cut -d= -f2 | tr -d ' ')" >> "$GITHUB_ENV"
       - name: Build
         run: chmod +x gradlew && ./gradlew --no-daemon assemble
       - name: Pick the jar
         run: |
-          JAR=$(ls build/libs/*.jar | grep -v -E -- '-(dev|sources|api|preshadow)\.jar$' | head -1)
+          JAR=$(ls build/libs/*.jar | grep -v -E -- '-(dev|sources|api|javadoc|preshadow)\.jar$' | head -1)
           cp "$JAR" "GTInterestingThing-${VERSION}.jar"
           ls -la build/libs
       - uses: actions/upload-artifact@v4
